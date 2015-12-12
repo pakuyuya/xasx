@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings>
+  <rules>
+    <rule name="require" class="org.ppa.xmlvalidator.ruleset.RequireRule" />
+    <rule name="requireuc" class="org.ppa.xmlvalidator.ruleset.RequireUCRule" />
+    <rule name="minmaxlen" class="org.ppa.xmlvalidator.ruleset.MinmaxlenRule" />
+  </rules>
+  <prop name="rule-prefix"> rule: </prop>
+</settings>

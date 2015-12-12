@@ -8,6 +8,11 @@ public class XmlValidatorStringUtil {
 
     final static public String EMPTY = "";
 
+    /**
+     * StringUtils.isBlank()相当の機能
+     * @param cs
+     * @return
+     */
     final static public boolean isEmpty(CharSequence cs) {
         return cs == null || cs.length() == 0;
     }
@@ -88,6 +93,10 @@ public class XmlValidatorStringUtil {
      * @return
      */
     final static public String strip(final String str) {
+        if (str == null) {
+            return null;
+        }
+
         int len = str.length();
         int start = -1;
         for(int i = 0; i < len; ++i) {
@@ -122,33 +131,12 @@ public class XmlValidatorStringUtil {
     }
 
     /**
-     * StringUtils.stripToNull()相当の実装
+     * StringUtils.trim()相当の実装
      *
      * @param str
      * @return
      */
-    final static public String stripToNull(final String str) {
-        return (str == null) ? null: strip(str);
-    }
-
-
-    /**
-     * StringUtils.trimToEmpty()相当の実装
-     *
-     * @param str
-     * @return
-     */
-    final static public String trimToEmpty(final String str) {
-        return (str == null) ? EMPTY : str.trim();
-    }
-
-    /**
-     * StringUtils.trimToNull()相当の実装
-     *
-     * @param str
-     * @return
-     */
-    final static public String trimToNull(final String str) {
+    final static public String trim(final String str) {
         return (str == null) ? null : str.trim();
     }
 }
