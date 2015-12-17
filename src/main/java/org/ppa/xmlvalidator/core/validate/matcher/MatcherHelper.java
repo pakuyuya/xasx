@@ -14,7 +14,7 @@ public class MatcherHelper {
         matchers.add(new NameMatcher(src.getName()));
 
         for (Entry<String, String> attr : src.getAttributes().entrySet()) {
-            matchers.add(new AttributePatternMatcher(attr.getKey(), attr.getValue()));
+            matchers.add(new AttributeMatcher(attr.getKey(), attr.getValue()));
         }
 
         return matchers;

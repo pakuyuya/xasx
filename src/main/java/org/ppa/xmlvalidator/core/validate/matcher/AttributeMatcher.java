@@ -7,11 +7,11 @@ import org.ppa.xmlvalidator.core.validate.ValueNode;
 /**
  * 属性マッチャー
  */
-public class AttributePatternMatcher implements Matcher {
+public class AttributeMatcher implements Matcher {
     private String name;
     private String pattern;
 
-    public AttributePatternMatcher(String name, String pattern) {
+    public AttributeMatcher(String name, String pattern) {
         this.name = name;
         this.pattern = pattern;
     }
