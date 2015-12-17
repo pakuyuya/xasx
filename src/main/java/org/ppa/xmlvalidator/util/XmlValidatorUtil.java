@@ -13,10 +13,15 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * XML
  */
-public class XmlUtil {
+public class XmlValidatorUtil {
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     static public XmlElementData readXmlElementData(Node node) {
 
         XmlElementData element = new XmlElementData();
@@ -61,6 +66,7 @@ public class XmlUtil {
         Node node = document.getDocumentElement();
         return readXmlElementData(node);
     }
+
     static public XmlElementData parseHierarchical(InputStream is) throws SAXException, IOException, ParserConfigurationException {
         Document document = DocumentBuilderFactory
                    .newInstance()

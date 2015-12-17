@@ -1,7 +1,7 @@
 package org.ppa.xmlvalidator.util;
 
 /**
- * Common-lang StringUtils相当のオレオレUtil
+ * common-lang StringUtils相当のオレオレUtil
  * 下手に依存関係作りたくなかったので手実装。
  */
 public class XmlValidatorStringUtil {
@@ -9,7 +9,7 @@ public class XmlValidatorStringUtil {
     final static public String EMPTY = "";
 
     /**
-     * StringUtils.isBlank()相当の機能
+     * StringUtils.isEmpty()相当の機能
      * @param cs
      * @return
      */
@@ -138,5 +138,16 @@ public class XmlValidatorStringUtil {
      */
     final static public String trim(final String str) {
         return (str == null) ? null : str.trim();
+    }
+
+    /**
+     * StringUtils.equals()相当の実装
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    final static public boolean equal(final String lhs, final String rhs) {
+        return lhs != null && rhs != null && lhs.equals(rhs);
     }
 }

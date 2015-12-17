@@ -8,14 +8,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
 import org.ppa.xmlvalidator.util.XmlElementData;
-import org.ppa.xmlvalidator.util.XmlUtil;
+import org.ppa.xmlvalidator.util.XmlValidatorUtil;
 import org.xml.sax.SAXException;
 
 public class XmlUtilTest {
 
     @Test
     public void parseHierachicalTest() throws SAXException, IOException, ParserConfigurationException {
-        XmlElementData settings = XmlUtil.parseHierarchical(this.getClass().getClassLoader()
+        XmlElementData settings = XmlValidatorUtil.parseHierarchical(this.getClass().getClassLoader()
                     .getResourceAsStream("util/XmlElementData/parse1.xml"));
 
         assertEquals(settings.getName(), "settings");

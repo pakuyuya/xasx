@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Xml要素のParse結果
+ */
 public class XmlElementData {
     private String name;
     private Map<String, String> attributes = new HashMap<String, String>();

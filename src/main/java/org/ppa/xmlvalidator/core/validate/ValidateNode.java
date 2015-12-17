@@ -2,6 +2,8 @@ package org.ppa.xmlvalidator.core.validate;
 
 import java.util.List;
 
+import org.ppa.xmlvalidator.core.validate.matcher.Matcher;
+
 /**
  * 各項目ごとの検証ルールを保持する
  */
