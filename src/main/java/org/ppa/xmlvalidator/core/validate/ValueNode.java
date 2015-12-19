@@ -9,7 +9,7 @@ import java.util.Map;
 public class ValueNode {
     private String name;
     private String value;
-    List<String> chidrenNames;
+    List<ValueNode> chidren;
     private Map<String, String> attributes;
 
     public String getName() {
@@ -24,11 +24,11 @@ public class ValueNode {
     public void setValue(String value) {
         this.value = value;
     }
-    public List<String> getChidrenNames() {
-        return chidrenNames;
+    public List<ValueNode> getChidren() {
+        return chidren;
     }
-    public void setChidrenNames(List<String> chidrenNames) {
-        this.chidrenNames = chidrenNames;
+    public void setChidren(List<ValueNode> chidren) {
+        this.chidren = chidren;
     }
     public Map<String, String> getAttributes() {
         return attributes;

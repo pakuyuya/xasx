@@ -3,33 +3,64 @@ package org.ppa.xmlvalidator.core.validate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ppa.xmlvalidator.core.validate.matcher.Matcher;
+
 /**
- * 検証のメインメソッド
+ * 検証のメインロジック
  */
 abstract public class ValidateEngine<T> {
-    private ValueNodeReader<T> valueNodeReader;
 
-    public List<String> validateRecursive(final ValueNode target, final ValidateNode validrules, ValidationContext context) {
+    /**
+     * 与えられたValueNodeに対し、ValidateNodeによる検証を行います。
+     * @param target
+     * @param validrules
+     * @return
+     */
+    public List<String> validateRecursive(final ValueNode target, final ValidateNode validrules) {
+        ValidationContext context  = new ValidationContext();
         List<String> errors = new ArrayList<String>();
 
-        // TODO:
+        if (isMatchNode(target, validrules.getMatchers())) {
+            validateRecurciveInner(target, validrules, context, errors);
+        }
 
         return errors;
     }
 
-    private List<String> validate(final ValueNode target, final ValidateNode validrules, ValidationContext context) {
-        List<String> errors = new ArrayList<String>();
+    private void validateRecurciveInner(final ValueNode target, final ValidateNode validrules, ValidationContext context, List<String> errors) {
+        context.getValidateStack().push(validrules);
 
-        // TODO:
+        for (Rule rule : validrules.getRules()) {
+            rule.validateNode(target, validrules, context);
+        }
 
-        return errors;
+        for (ValueNode child : target.getChidren()) {
+            validchildLoop:
+            for (ValidateNode validChild : validrules.getChildren()) {
+                for (Matcher matcher : validChild.getMatchers()) {
+                    if (!matcher.match(child)) {
+                        continue validchildLoop;
+                    }
+                }
+                validateRecurciveInner(child, validChild, context, errors);
+            }
+        }
+
+        for (ValidateNode validChild : validrules.getChildren()) {
+            for (Rule rules : validChild.getRules()) {
+                rules.onLeaveScope(validChild, context);
+            }
+        }
+
+        context.getValidateStack().pop();
     }
 
-    public ValueNodeReader<T> getValueNodeReader() {
-        return valueNodeReader;
-    }
-
-    public void setValueNodeReader(ValueNodeReader<T> valueNodeReader) {
-        this.valueNodeReader = valueNodeReader;
+    private boolean isMatchNode(ValueNode node, List<Matcher> matchers){
+        for (Matcher matcher : matchers) {
+            if (!matcher.match(node)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

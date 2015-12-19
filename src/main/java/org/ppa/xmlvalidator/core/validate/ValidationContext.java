@@ -6,12 +6,12 @@ import java.util.Stack;
  * 検証処理のContext
  */
 public class ValidationContext {
-    private Stack<ValueNode> nodeStack;
+    private Stack<ValidateNode> validateStack;
 
-    public Stack<ValueNode> getNodeStack() {
-        return nodeStack;
+    public Stack<ValidateNode> getValidateStack() {
+        return validateStack;
     }
-    public void setNodeStack(Stack<ValueNode> nodeStack) {
-        this.nodeStack = nodeStack;
+    public void setValidateStack(Stack<ValidateNode> validateStack) {
+        this.validateStack = validateStack;
     }
 }

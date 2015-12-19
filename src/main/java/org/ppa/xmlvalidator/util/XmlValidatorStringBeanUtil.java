@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 public class XmlValidatorStringBeanUtil {
 
     /**
-     *
+     * String型のプロパティを取得します。
      * @param bean
      * @param name
      * @return
@@ -23,15 +23,16 @@ public class XmlValidatorStringBeanUtil {
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
                 | SecurityException e) {
             try {
-                return (String)clazz.getMethod(methodName2).invoke(bean);
+                Object ret = clazz.getMethod(methodName2).invoke(bean);
+                return (ret instanceof String) ? (String)ret : null;
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException ex) {
-                throw new RuntimeException(e);
+                return null;
             }
         }
     }
-    /**
-    *
+   /**
+    * String型のプロパティを設定します。
     * @param bean
     * @param name
     * @return
@@ -43,7 +44,7 @@ public class XmlValidatorStringBeanUtil {
        try {
            clazz.getMethod(methodName, String.class).invoke(bean, value);
        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException | NoSuchMethodException e) {
-           throw new RuntimeException(e);
+           // ignore
        }
    }
 }
