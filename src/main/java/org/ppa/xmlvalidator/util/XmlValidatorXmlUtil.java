@@ -15,14 +15,14 @@ import org.xml.sax.SAXException;
 /**
  * XML
  */
-public class XmlValidatorUtil {
+public class XmlValidatorXmlUtil {
 
     /**
      *
      * @param node
      * @return
      */
-    static public XmlElementData readXmlElementData(Node node) {
+    static public XmlElementData convertXmlElementData(Node node) {
 
         XmlElementData element = new XmlElementData();
 
@@ -43,7 +43,7 @@ public class XmlValidatorUtil {
                 element.getChildren().add(child.getNodeValue());
                 break;
             case Node.ELEMENT_NODE :
-                element.getChildren().add(readXmlElementData(child));
+                element.getChildren().add(convertXmlElementData(child));
                 break;
             case Node.TEXT_NODE:
                 if (XmlValidatorStringUtil.isNotBlankAscii(child.getNodeValue())) {
@@ -64,7 +64,7 @@ public class XmlValidatorUtil {
                    .parse(file);
 
         Node node = document.getDocumentElement();
-        return readXmlElementData(node);
+        return convertXmlElementData(node);
     }
 
     static public XmlElementData parseHierarchical(InputStream is) throws SAXException, IOException, ParserConfigurationException {
@@ -74,6 +74,6 @@ public class XmlValidatorUtil {
                    .parse(is);
 
         Node node = document.getDocumentElement();
-        return readXmlElementData(node);
+        return convertXmlElementData(node);
     }
 }

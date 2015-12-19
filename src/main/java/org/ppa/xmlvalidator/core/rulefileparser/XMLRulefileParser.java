@@ -20,7 +20,7 @@ import org.ppa.xmlvalidator.core.validate.Translate;
 import org.ppa.xmlvalidator.core.validate.ValidateNode;
 import org.ppa.xmlvalidator.core.validate.matcher.MatcherHelper;
 import org.ppa.xmlvalidator.util.XmlElementData;
-import org.ppa.xmlvalidator.util.XmlValidatorUtil;
+import org.ppa.xmlvalidator.util.XmlValidatorXmlUtil;
 import org.xml.sax.SAXException;
 
 
@@ -44,7 +44,7 @@ public class XMLRulefileParser implements RulefileParser {
         ValidateNode ret = null;
 
         try {
-            XmlElementData rulefile = XmlValidatorUtil.parseHierarchical(file);
+            XmlElementData rulefile = XmlValidatorXmlUtil.parseHierarchical(file);
             Map<String, String> localTranslateClassMap = new HashMap<String, String>();
             localTranslateClassMap.putAll(translateClassMap);
             Map<String, String> localRuleClassMap = new HashMap<String, String>();
@@ -146,7 +146,7 @@ public class XMLRulefileParser implements RulefileParser {
      */
     public void loadSettingFile(File file) {
         try {
-            XmlElementData settings = XmlValidatorUtil.parseHierarchical(file);
+            XmlElementData settings = XmlValidatorXmlUtil.parseHierarchical(file);
             loadSettings(settings, translateClassMap, ruleClassMap, properties, defaultTranslats);
         } catch (SAXException | IOException | ParserConfigurationException e ) {
             throw new RuntimeException(e);

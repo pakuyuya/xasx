@@ -1,37 +1,41 @@
 package org.ppa.xmlvalidator.core.validate;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.ppa.xmlvalidator.core.validate.matcher.Matcher;
+import org.ppa.xmlvalidator.util.XmlValidatorCommonUtil;
 
 /**
  * 検証のメインロジック
  */
-abstract public class ValidateEngine<T> {
+public class ValidateEngine {
 
     /**
      * 与えられたValueNodeに対し、ValidateNodeによる検証を行います。
-     * @param target
-     * @param validrules
+     * @param valueNode
+     * @param validateNode
      * @return
      */
-    public List<String> validateRecursive(final ValueNode target, final ValidateNode validrules) {
+    public Map<String, List<String>> validateRecursive(final ValueNode valueNode, final ValidateNode validateNode) {
         ValidationContext context  = new ValidationContext();
-        List<String> errors = new ArrayList<String>();
+        Map<String, List<String>> errors = new HashMap<String, List<String>>();
 
-        if (isMatchNode(target, validrules.getMatchers())) {
-            validateRecurciveInner(target, validrules, context, errors);
+        if (isMatchNode(valueNode, validateNode.getMatchers())) {
+            validateRecurciveInner(valueNode, validateNode, context, errors);
         }
 
         return errors;
     }
 
-    private void validateRecurciveInner(final ValueNode target, final ValidateNode validrules, ValidationContext context, List<String> errors) {
+    private void validateRecurciveInner(final ValueNode target, final ValidateNode validrules, ValidationContext context, Map<String, List<String>> errors) {
         context.getValidateStack().push(validrules);
 
         for (Rule rule : validrules.getRules()) {
-            rule.validateNode(target, validrules, context);
+            ErrorMessage error = rule.validateNode(target, validrules, context);
+            if (error != null)
+                XmlValidatorCommonUtil.putMapList(errors, error.getName(), error.getMessage());
         }
 
         for (ValueNode child : target.getChidren()) {
@@ -48,7 +52,9 @@ abstract public class ValidateEngine<T> {
 
         for (ValidateNode validChild : validrules.getChildren()) {
             for (Rule rules : validChild.getRules()) {
-                rules.onLeaveScope(validChild, context);
+                ErrorMessage error = rules.onLeaveScope(validChild, context);
+                if (error != null)
+                    XmlValidatorCommonUtil.putMapList(errors, error.getName(), error.getMessage());
             }
         }
 

@@ -1,5 +1,7 @@
 package org.ppa.xmlvalidator.util;
 
+import java.util.Collection;
+
 /**
  * common-lang StringUtils相当のオレオレUtil
  * 下手に依存関係作りたくなかったので手実装。
@@ -149,5 +151,39 @@ public class XmlValidatorStringUtil {
      */
     final static public boolean equal(final String lhs, final String rhs) {
         return lhs != null && rhs != null && lhs.equals(rhs);
+    }
+
+    /**
+     * 数字かを判定
+     *
+     * @param cs
+     * @return
+     */
+    final static public boolean isNumeric(final CharSequence cs){
+        if (cs == null)
+            return false;
+
+        for (int i=0; i < cs.length(); ++i) {
+            if (!Character.isDigit(cs.charAt(i)))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * コレクションの要素ごとに両端要素を付与してjoinした文字列を返却する。
+     * @param c
+     * @param prefix
+     * @param suffix
+     * @return
+     */
+    final static public String joinSand(Collection<?> c, String prefix, String suffix) {
+        StringBuilder sb = new StringBuilder();
+        for(Object o : c) {
+            sb.append(prefix);
+            sb.append(o.toString());
+            sb.append(suffix);
+        }
+        return sb.toString();
     }
 }

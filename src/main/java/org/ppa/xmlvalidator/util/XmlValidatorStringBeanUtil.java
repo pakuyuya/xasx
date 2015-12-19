@@ -3,7 +3,7 @@ package org.ppa.xmlvalidator.util;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * XML
+ * String特化のBeanユーティリティ
  */
 public class XmlValidatorStringBeanUtil {
 
