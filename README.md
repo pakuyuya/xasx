@@ -1,7 +1,7 @@
- * XMLファイルの検証を、同じくXMLで書かれたvalidation定義で検証で行うライブラリ。
+ * XMLファイルの検証を、同じくXMLで書かれたvalidation定義で検証で行うシンプルなライブラリ。
  * Java 8+
 
- * 例えば、仕事でXMLフォーマットの検証を実装することになった。どうやら、以下の```<ids>```タグは全くの別物のようだ。
+ * XMLファイルの検証で、例えば以下２つの```<ids>```みたいに、属性値が違うものには全く別のチェックを行うことがよくある。
 ```
 <books>
   <book>
@@ -10,10 +10,8 @@
   </book>
 </books>
 ```
- * Javaのmodle検証な validator は、要素名はちゃんと分けてくれるんだけど、属性値によってケースを分ける場合は、実装者の負担になる。そして、だいたい保守性の低い if else のミートソースもりもりになってしまう！！
-
- * じゃ、こんなルールファイルがあったらどうかな。
-
+ * いちいち if で書いていくと・・・ひどいことになるのは目に見えている。
+ * このライブラリは、以下のようなコンフィグファイルで検証を行う。
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <rulefile>
@@ -34,17 +32,23 @@
 </rulefile>
 ```
 
- * ・・・多少言いたいことはあるんだろうけど、```if```でこの程度のことを実装するよりはだいぶだいぶ見やすいじゃないかな。
+ * 「type-Aが存在したらtype-Bは存在しない」みたいな、複数の項目が必要になるチェックは目的としてない。むしろ、その手は適切なモデルにparseしてから if - else で検証するほうが都合が良いのでは？
 
- * 「type-Aが存在したらtype-Bは存在しない」みたいな、複数の項目が必要になるチェックは期待しないでほしい。（本当に、その場でベタに```if```を書く場合が適していることもある。）
- * ただ、このライブラリは以下みたいな解法は用意するつもりだ。
 
+## コンフィグファイル
+
+ * 基本的には以下の書式。
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <rulefile>
   <settings>
+    <prop name="rule-prefix">rule:</prop>
+    <rules>
+      <rule name="regex" class="org.ppa.xmlvalidator.preset.RegexRule" />
+      <rule name="repeat" class="org.ppa.xmlvalidator.preset.RepeatRule" />
+    </rule>
   </settings>
-  <validates>
+  <validation>
   <books>
   <book>
     <ids>
@@ -57,6 +61,26 @@
       <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" trim="ASCII" />
     </ids>
   </boks>
-  </validates>
+  </validation>
 </rulefile>
 ```
+
+ * <include> 機能や別途コンフィグファイルのロード機能も取り込む予定。
+ *
+
+## マッチングルール
+
+ * <validation> のマッチングルールは、機械的に判定する。
+ * 例えば以下の場合では、「<ids>タグすべて」「<ids>タグで id-type="type-A"のタグすべて」「<ids>タグで id-type="type-B"のタグすべて」の３つの検証ルールとなる。
+```
+    <ids>
+      <rule:repeat max="1" />
+    </ids>
+    <ids id-type="type-A">
+      <rule:regex  pattern="^\d{3}-\d{7}$" trim="ASCII" />
+    </ids>
+    <ids id-type="type-B">
+      <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" trim="ASCII" />
+    </ids>
+```
+ * ワイルドカードや正規表現指定は、今のところない。（core変えて対応するかも）
