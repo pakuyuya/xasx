@@ -2,6 +2,7 @@ package org.ppa.xmlvalidator.xml;
 
 import org.ppa.xmlvalidator.core.validate.ValueNode;
 import org.ppa.xmlvalidator.core.validate.ValueNodeReader;
+import org.ppa.xmlvalidator.core.validate.ValueReadContext;
 import org.ppa.xmlvalidator.util.XmlElementData;
 import org.ppa.xmlvalidator.util.XmlValidatorXmlUtil;
 import org.w3c.dom.Node;
@@ -9,7 +10,11 @@ import org.w3c.dom.Node;
 public class XmlValueNodeReader implements ValueNodeReader<Node> {
 
     @Override
-    public ValueNode convertNode(String name, Node src) {
+    public ValueNode convertNode(String name, Node src, ValueReadContext context) {
+
+        if (src.getNodeType() != Node.ELEMENT_NODE) {
+            return null;
+        }
 
         XmlElementData elm = XmlValidatorXmlUtil.convertXmlElementData(src);
 
@@ -17,15 +22,17 @@ public class XmlValueNodeReader implements ValueNodeReader<Node> {
         node.setName(name);
         node.getAttributes().putAll(elm.getAttributes());
 
-        String value = "";
+        for(int i=0; i<src.getChildNodes().getLength(); i++) {
+           Node child = src.getChildNodes().item(i);
+           ValueNode childNode = convertNode(child.getNodeName(), child, context);
+           if (childNode != null) {
+               node.getChidren().add(childNode);
+           }
+        }
+
+        String value = context.getValueMerger().mergeValue(node);
+        node.setValue(value);
 
         return node;
     }
-
-    @Override
-    public Node readChildNode(Node parent, String childName) {
-        // TODO 自動生成されたメソッド・スタブ
-        return null;
-    }
-
 }

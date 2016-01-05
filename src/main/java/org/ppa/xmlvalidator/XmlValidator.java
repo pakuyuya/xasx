@@ -1,3 +1,4 @@
+package org.ppa.xmlvalidator;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -6,12 +7,15 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.ppa.xmlvalidator.core.message.MapMessageStock;
 import org.ppa.xmlvalidator.core.rulefileparser.RulefileParser;
 import org.ppa.xmlvalidator.core.rulefileparser.XMLRulefileParser;
 import org.ppa.xmlvalidator.core.validate.ValidateEngine;
 import org.ppa.xmlvalidator.core.validate.ValidateNode;
 import org.ppa.xmlvalidator.core.validate.ValueNode;
 import org.ppa.xmlvalidator.core.validate.ValueNodeReader;
+import org.ppa.xmlvalidator.core.validate.ValueReadContext;
+import org.ppa.xmlvalidator.core.validate.merger.ConcatStringChildMerger;
 import org.ppa.xmlvalidator.xml.XmlValueNodeReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -35,9 +39,15 @@ public class XmlValidator {
                     .parse(xmlFile);
             Node node = document.getDocumentElement();
 
-            ValueNode valueNode = valueNodeReader.convertNode(node.getNodeName(), node);
+            ValueReadContext context = new ValueReadContext();
+            context.setValueMerger(new ConcatStringChildMerger()); // むう。どこかからinjectできないか
 
-            return validateEngine.validateRecursive(valueNode, validateNode);
+            ValueNode valueNode = valueNodeReader.convertNode(node.getNodeName(), node, context);
+
+            MapMessageStock errors = new MapMessageStock();
+            validateEngine.validateRecursive(valueNode, validateNode, errors);
+
+            return errors.getMessages();
 
         } catch (SAXException | IOException | ParserConfigurationException e) {
             throw new RuntimeException(e);

@@ -12,6 +12,7 @@ public class ValidateNode {
     private List<Rule> rules;
     private List<Translate> translates;
     private List<Matcher> matchers;
+    private ValueMerger merger;
 
     public List<ValidateNode> getChildren() {
         return children;
@@ -36,5 +37,11 @@ public class ValidateNode {
     }
     public void setMatchers(List<Matcher> matchers) {
         this.matchers = matchers;
+    }
+    public ValueMerger getMerger() {
+        return merger;
+    }
+    public void setMerger(ValueMerger merger) {
+        this.merger = merger;
     }
 }
