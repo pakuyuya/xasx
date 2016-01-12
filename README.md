@@ -38,7 +38,7 @@
 
 ## コンフィグファイル
 
- * 基本的には以下の書式。
+* コンフィグファイル例
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <rulefile>
@@ -51,28 +51,28 @@
   </settings>
   <validation>
   <books>
-  <book>
-    <ids>
-      <rule:repeat max="1" />
-    </ids>
-    <ids id-type="type-A">
-      <rule:regex  pattern="^\d{3}-\d{7}$" trim="ASCII" />
-    </ids>
-    <ids id-type="type-B">
-      <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" trim="ASCII" />
-    </ids>
-  </boks>
+    <book>
+      <ids>
+        <rule:repeat max="1" />
+      </ids>
+      <ids id-type="type-A">
+        <rule:regex  pattern="^\d{3}-\d{7}$" trim="ASCII" />
+      </ids>
+      <ids id-type="type-B">
+        <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" trim="ASCII" />
+      </ids>
+    </book>
+  </books>
   </validation>
 </rulefile>
 ```
 
  * ```<include>``` 機能や別途コンフィグファイルのロード機能も取り込む予定。
- *
 
 ## マッチングルール
 
- * ```<validation>``` のマッチングルールは、機械的に判定する。
- * 例えば以下の場合では、「```<ids>```タグすべて」「```<ids>```タグで ```id-type="type-A"```のタグすべて」「```<ids>```タグで ```id-type="type-B"```のタグすべて」の３つの検証ルールとなる。
+ * ```<validation>```内での検証定義は、タグ名・属性名の完全一致で判断する。
+ * 例えば以下の場合では、「```<ids>```タグすべて」「```<ids>```タグで 属性```id-type="type-A"```のタグすべて」「```<ids>```タグで ```id-type="type-B"```のタグすべて」の３つの検証ルールとなる。
 ```
     <ids>
       <rule:repeat max="1" />
@@ -84,4 +84,10 @@
       <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" trim="ASCII" />
     </ids>
 ```
- * ワイルドカードや正規表現指定は、今のところない。（core変えて対応するかも）
+ * ワイルドカードや正規表現指定は、今のところ予定していない。（core変えて対応するかも）
+
+## ルールの追加
+
+ * ```Rule```クラスを```implement```し、検証ルールを任意に追加できる。
+ * コンフィグファイル内 ```<rules>``` にエントリーを追加することで対応可能。
+ * DIやゼロコンフィグは未定。
