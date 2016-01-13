@@ -7,15 +7,15 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
-import org.ppa.xmlvalidator.util.XmlElementData;
-import org.ppa.xmlvalidator.util.XmlValidatorXmlUtil;
+import org.ppa.xasx.util.XmlElementData;
+import org.ppa.xasx.util.XasXXmlUtil;
 import org.xml.sax.SAXException;
 
 public class XmlUtilTest {
 
     @Test
     public void parseHierachicalTest() throws SAXException, IOException, ParserConfigurationException {
-        XmlElementData settings = XmlValidatorXmlUtil.parseHierarchical(this.getClass().getClassLoader()
+        XmlElementData settings = XasXXmlUtil.parseHierarchical(this.getClass().getClassLoader()
                     .getResourceAsStream("util/XmlElementData/parse1.xml"));
 
         assertEquals(settings.getName(), "settings");
