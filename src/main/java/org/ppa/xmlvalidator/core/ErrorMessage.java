@@ -1,4 +1,4 @@
-package org.ppa.xmlvalidator.core.validate;
+package org.ppa.xmlvalidator.core;
 
 public class ErrorMessage {
     private String name;

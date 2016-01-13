@@ -1,8 +1,8 @@
-package org.ppa.xmlvalidator.core.validate.matcher;
+package org.ppa.xmlvalidator.core.matcher;
 
 import static org.ppa.xmlvalidator.util.XmlValidatorStringUtil.*;
 
-import org.ppa.xmlvalidator.core.validate.ValueNode;
+import org.ppa.xmlvalidator.core.ValueIOContext;
 
 /**
  * 属性マッチャー
@@ -17,8 +17,8 @@ public class AttributeMatcher implements Matcher {
     }
 
     @Override
-    public boolean match(ValueNode o) {
-        String pattern = o.getAttributes().get(name);
-        return equal(pattern, this.pattern);
+    public boolean match(Object o, ValueIOContext context) {
+        String attribute = context.getValueNodeReader().getAttribute(o, name, context);
+        return equal(attribute, this.pattern);
     }
 }

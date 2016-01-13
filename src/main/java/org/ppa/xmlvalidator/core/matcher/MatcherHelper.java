@@ -1,4 +1,4 @@
-package org.ppa.xmlvalidator.core.validate.matcher;
+package org.ppa.xmlvalidator.core.matcher;
 
 import java.util.ArrayList;
 import java.util.List;

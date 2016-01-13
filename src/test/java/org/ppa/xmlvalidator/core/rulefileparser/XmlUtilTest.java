@@ -1,6 +1,6 @@
 package org.ppa.xmlvalidator.core.rulefileparser;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 

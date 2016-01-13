@@ -1,4 +1,7 @@
-package org.ppa.xmlvalidator.core.validate;
+package org.ppa.xmlvalidator.core;
+
+import org.ppa.xmlvalidator.core.validate.ValidateContext;
+
 
 /**
  * 検証ルール
@@ -23,7 +26,7 @@ public interface Rule {
      * @maram context
      * @return エラーメッセージ。何も返さない場合は空文字またはnull
      */
-    public ErrorMessage validateNode(final ValueNode node, final ValidateNode validNode, final ValidationContext context);
+    public ErrorMessage validateNode(final ValueNode node, final NodeDefine validNode, final ValidateContext context);
 
     /**
      * スコープから抜けるときに１回だけ呼ばれる
@@ -31,5 +34,5 @@ public interface Rule {
      * @param context
      * @return
      */
-    public ErrorMessage onLeaveScope(final ValidateNode validNode, final ValidationContext context);
+    public ErrorMessage onLeaveScope(final NodeDefine validNode, final ValidateContext context);
 }

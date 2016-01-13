@@ -15,19 +15,19 @@ import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.ppa.xmlvalidator.core.validate.Rule;
-import org.ppa.xmlvalidator.core.validate.Translate;
-import org.ppa.xmlvalidator.core.validate.ValidateNode;
-import org.ppa.xmlvalidator.core.validate.matcher.MatcherHelper;
+import org.ppa.xmlvalidator.core.Rule;
+import org.ppa.xmlvalidator.core.Translate;
+import org.ppa.xmlvalidator.core.NodeDefine;
+import org.ppa.xmlvalidator.core.matcher.MatcherHelper;
 import org.ppa.xmlvalidator.util.XmlElementData;
 import org.ppa.xmlvalidator.util.XmlValidatorXmlUtil;
 import org.xml.sax.SAXException;
 
 
 /**
- * XML検証ルールファイルのパーサ
+ * XML形式設定ファイルパーサ
  */
-public class XMLRulefileParser implements RulefileParser {
+public class XMLConfigfileParser implements ConfigfileParser {
 
     Map<String, String> translateClassMap = new HashMap<String, String>();
     Map<String, String> ruleClassMap = new HashMap<String, String>();
@@ -40,8 +40,8 @@ public class XMLRulefileParser implements RulefileParser {
      * @param file 検証ルールファイル
      * @return 検証ルール
      */
-    public ValidateNode parse(File file) {
-        ValidateNode ret = null;
+    public Configs parse(File file) {
+        Configs ret = new Configs();
 
         try {
             XmlElementData rulefile = XmlValidatorXmlUtil.parseHierarchical(file);
@@ -64,7 +64,7 @@ public class XMLRulefileParser implements RulefileParser {
                         loadSettings(elm, localTranslateClassMap, localRuleClassMap, localProperties, defaultTranslats);
                         break;
                     case "validation":
-                        ret = convertValidation(elm, localTranslateClassMap, localRuleClassMap, localProperties, defaultTranslats);
+                        ret.setRootNode(convertValidation(elm, localTranslateClassMap, localRuleClassMap, localProperties, defaultTranslats));
                         break;
                     }
                 }
@@ -75,11 +75,11 @@ public class XMLRulefileParser implements RulefileParser {
         return ret;
     }
 
-    private ValidateNode convertValidation(XmlElementData validation,
+    private NodeDefine convertValidation(XmlElementData validation,
             Map<String, String> translateClassMap, Map<String, String> ruleClassMap,
             Map<String, String> properties, List<String> defaultTranslats) {
 
-        ValidateNode node = new ValidateNode();
+        NodeDefine node = new NodeDefine();
 
         node.getMatchers().addAll(MatcherHelper.createMatchers(validation));
 
@@ -131,7 +131,7 @@ public class XMLRulefileParser implements RulefileParser {
                         new RuntimeException(e);
                     }
                 } else {
-                    ValidateNode childNode = convertValidation(child, translateClassMap, ruleClassMap, properties, defaultTranslats);
+                    NodeDefine childNode = convertValidation(child, translateClassMap, ruleClassMap, properties, defaultTranslats);
                     node.getChildren().add(childNode);
                 }
             }

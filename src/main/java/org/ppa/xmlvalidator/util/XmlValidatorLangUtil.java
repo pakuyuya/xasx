@@ -20,12 +20,12 @@ public class XmlValidatorLangUtil {
      * @param o
      * @return
      */
-    public static <T> T clone(T o) {
+    public static <T> T cloneInstance(T o) {
         try {
             Class<?> clazz = o.getClass();
 
             @SuppressWarnings("unchecked")
-            T ret = (T) (clazz.newInstance());
+            T ret = (T)(clazz.newInstance());
 
             Arrays.asList(clazz.getDeclaredFields())
                 .stream()
@@ -37,6 +37,19 @@ public class XmlValidatorLangUtil {
 
             return ret;
         } catch (InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 例外を送出しないClass#forName
+     * @param className
+     * @return
+     */
+    public static Object classForNameQuietly(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
             return null;
         }
     }
