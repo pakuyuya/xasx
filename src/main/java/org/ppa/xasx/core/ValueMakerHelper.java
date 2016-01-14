@@ -1,7 +1,4 @@
-package org.ppa.xasx.core.valuemaker;
-
-import org.ppa.xasx.core.ValueIOContext;
-import org.ppa.xasx.core.ValueNodeReader;
+package org.ppa.xasx.core;
 
 public class ValueMakerHelper {
 
