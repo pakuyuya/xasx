@@ -1,4 +1,4 @@
-package org.ppa.xmlvalidator.core.rulefileparser;
+package org.ppa.xasx.core.rulefileparser;
 
 import static org.junit.Assert.*;
 
