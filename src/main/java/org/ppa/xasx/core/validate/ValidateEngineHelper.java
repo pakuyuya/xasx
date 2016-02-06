@@ -5,9 +5,9 @@ import static org.ppa.xasx.util.XasXLangUtil.*;
 import java.util.Map;
 
 import org.ppa.xasx.core.ValueIOContext;
-import org.ppa.xasx.core.ValueMaker;
 import org.ppa.xasx.core.XasXHelper;
 import org.ppa.xasx.core.rulefileparser.ConfigsPropKey;
+import org.ppa.xasx.types.ValueMaker;
 
 /**
  * {@code ValudateEngine}ヘルパ

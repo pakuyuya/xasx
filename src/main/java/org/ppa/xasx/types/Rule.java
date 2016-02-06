@@ -1,5 +1,8 @@
-package org.ppa.xasx.core;
+package org.ppa.xasx.types;
 
+import org.ppa.xasx.core.ErrorMessage;
+import org.ppa.xasx.core.NodeDefine;
+import org.ppa.xasx.core.ValueNode;
 import org.ppa.xasx.core.validate.ValidateContext;
 
 

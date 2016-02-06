@@ -1,7 +1,9 @@
-package org.ppa.xasx.core.message;
+package org.ppa.xasx.preset.message;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.ppa.xasx.core.message.MessageStock;
 
 public class ListMessageStock implements MessageStock {
     private List<String> messages = new ArrayList<String>();

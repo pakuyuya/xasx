@@ -7,14 +7,14 @@ import java.util.List;
 
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
-import org.ppa.xasx.core.Rule;
 import org.ppa.xasx.core.ValueIOContext;
 import org.ppa.xasx.core.ValueNode;
 import org.ppa.xasx.core.ValueNodeProxy;
-import org.ppa.xasx.core.ValueNodeReader;
-import org.ppa.xasx.core.ValueNodeWriter;
 import org.ppa.xasx.core.matcher.Matcher;
 import org.ppa.xasx.core.message.MessageStock;
+import org.ppa.xasx.types.Rule;
+import org.ppa.xasx.types.ValueMaker;
+import org.ppa.xasx.types.NodeReadWriter;
 
 /**
  * 検証のメインロジック
@@ -44,20 +44,19 @@ public class ValidateEngine {
                 errors.push(error.getName(), error.getMessage());
         }
 
-        List<Object> children = new ArrayList<Object>(node.getChildrenCount(valueIOContext));
-        for (int i=0, len=node.getChildrenCount(valueIOContext); i<len; i++) {
-            children.add(node.getChild(i, valueIOContext));
+        List<Object> children = new ArrayList<Object>(node.getChildrenCount());
+        for (int i=0, len=node.getChildrenCount(); i<len; i++) {
+            children.add(node.getChild(i));
         }
 
         for (Object child : children) {
             validchildLoop:
             for (NodeDefine childDefine : nodeDefine.getChildren()) {
                 ValueIOContext childValueIOCtx = cast(cloneInstance(valueIOContext));
-                childValueIOCtx.setValueNodeReader(childDefine.getValueNodeReader() != null ? childDefine.getValueNodeReader() : childValueIOCtx.getDefaultValueNodeReader());
-                childValueIOCtx.setValueNodeWriter(childDefine.getValueNodeWriter() != null ? childDefine.getValueNodeWriter() : childValueIOCtx.getDefaultValueNodeWriter());
+                childValueIOCtx.setValueNodeReaderWriter(childDefine.getValueNodeReader() != null ? childDefine.getValueNodeReader() : childValueIOCtx.getDefaultValueNodeReader());
 
                 for (Matcher matcher : childDefine.getMatchers()) {
-                    if (!matcher.match(child, childValueIOCtx)) {
+                    if (!matcher.match(child, childValueIOCtx.getValueNodeReaderWriter())) {
                         continue validchildLoop;
                     }
                 }
@@ -80,30 +79,26 @@ public class ValidateEngine {
 
     private boolean isMatchNode(ValueNode node, List<Matcher> matchers, ValueIOContext valueIOContext){
         for (Matcher matcher : matchers) {
-            if (!matcher.match(node, valueIOContext)) {
+            if (!matcher.match(node, valueIOContext.getValueNodeReaderWriter())) {
                 return false;
             }
         }
         return true;
     }
 
-    private ValueNodeReader resolveValueNodeReader(NodeDefine nodeDefine, ValueIOContext valueIOContext) {
-        if (nodeDefine.getValueNodeReader() != null) {
-            return nodeDefine.getValueNodeReader();
-        }
-        return valueIOContext.getDefaultValueNodeReader();
+    private NodeReadWriter resolveValueNodeReader(NodeDefine nodeDefine, ValueIOContext valueIOContext) {
+        return (nodeDefine.getValueNodeReader() != null)
+                    ? nodeDefine.getValueNodeReader() : valueIOContext.getDefaultValueNodeReader();
     }
 
-    private ValueNodeWriter resolveValueNodeWriter(NodeDefine nodeDefine, ValueIOContext valueIOContext) {
-        if (nodeDefine.getValueNodeWriter() != null) {
-            return nodeDefine.getValueNodeWriter();
-        }
-        return valueIOContext.getDefaultValueNodeWriter();
+    private ValueMaker resolveValueMaker(NodeDefine nodeDefine, ValueIOContext valueIOContext) {
+        return (nodeDefine.getValueMaker() != null)
+                ? nodeDefine.getValueMaker() : valueIOContext.getDefaultValueMaker();
     }
 
     private ValueNode createNode(Object node, NodeDefine nodeDefine, ValueIOContext context){
-        ValueNodeWriter writer = resolveValueNodeWriter(nodeDefine, context);
-        ValueNodeReader reader = resolveValueNodeReader(nodeDefine, context);
-        return new ValueNodeProxy(node, reader, writer);
+        NodeReadWriter readWriter = resolveValueNodeReader(nodeDefine, context);
+        ValueMaker valueMaker = resolveValueMaker(nodeDefine, context);
+        return new ValueNodeProxy(node, readWriter, valueMaker);
     }
 }

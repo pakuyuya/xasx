@@ -1,4 +1,4 @@
-package org.ppa.xasx.preset;
+package org.ppa.xasx.preset.rule;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
@@ -6,9 +6,9 @@ import java.text.MessageFormat;
 
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
-import org.ppa.xasx.core.Rule;
 import org.ppa.xasx.core.ValueNode;
 import org.ppa.xasx.core.validate.ValidateContext;
+import org.ppa.xasx.types.Rule;
 
 public class RepeatRule implements Rule {
     private int cnt = 0;

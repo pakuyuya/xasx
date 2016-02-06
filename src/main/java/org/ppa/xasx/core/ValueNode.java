@@ -6,19 +6,19 @@ import java.util.List;
  * ValueNodeのインタフェース
  */
 public interface ValueNode {
-    public String getName(ValueIOContext context);
-    public void setName(String name, ValueIOContext context);
+    public String getName();
+    public void setName(String name);
 
-    public String getValue(ValueIOContext context);
-    public void setValue(String value, ValueIOContext context);
+    public String getValue();
+    public void setValue(String value);
 
-    public List<String> getAttributeNames(ValueIOContext context);
-    public int getAttributesCount(ValueIOContext context);
+    public List<String> getAttributeNames();
+    public int getAttributesCount();
 
-    public String getAttribute(String name, ValueIOContext context);
-    public void setAttribute(String name, String value, ValueIOContext context);
+    public String getAttribute(String name);
+    public void setAttribute(String name, String value);
 
-    public Object getChild(int index, ValueIOContext context);
-    public int getChildrenCount(ValueIOContext context);
+    public Object getChild(int index);
+    public int getChildrenCount();
 
 }

@@ -1,9 +1,7 @@
-package org.ppa.xasx.core.valuemaker;
+package org.ppa.xasx.preset.valuemaker;
 
-import org.ppa.xasx.core.ValueIOContext;
-import org.ppa.xasx.core.ValueMaker;
-import org.ppa.xasx.core.ValueMakerHelper;
-import org.ppa.xasx.core.ValueNodeReader;
+import org.ppa.xasx.types.ValueMaker;
+import org.ppa.xasx.types.NodeReadWriter;
 
 /**
  * ValueMeakerの実装。<br>
@@ -13,14 +11,14 @@ public class MergeStringChildrenValueMaker implements ValueMaker {
     private boolean nullIfNonStringExists = false;
 
     @Override
-    public String make(Object node, ValueNodeReader reader, ValueIOContext context) {
+    public String make(Object node, NodeReadWriter readWriter) {
         StringBuffer sb = new StringBuffer();
 
         int stringCnt = 0;
 
-        int len = ValueMakerHelper.getChildrenCount(node, reader, context);
+        int len = ValueMakerHelper.getChildrenCount(node, readWriter);
         for (int i = 0; i < len; ++i) {
-            Object o = ValueMakerHelper.getChild(node, reader, i, context);
+            Object o = ValueMakerHelper.getChild(node, readWriter, i);
             if (!(o instanceof String)) {
                 if (nullIfNonStringExists) {
                     return null;

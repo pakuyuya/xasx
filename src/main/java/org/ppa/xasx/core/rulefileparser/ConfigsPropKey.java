@@ -12,10 +12,5 @@ public class ConfigsPropKey {
     /**
      * 使用するValueNodeReaderの初期値
      */
-    final static public String DEFAULT_VALUE_NODE_READER = "defualt-value-node-reader";
-
-    /**
-     * 使用するValueNodeWriterの初期値
-     */
-    final static public String DEFAULT_VALUE_NODE_WRITER = "defualt-value-node-writer";
+    final static public String DEFAULT_VALUE_NODE_READWRITER = "defualt-value-node-readwriter";
 }

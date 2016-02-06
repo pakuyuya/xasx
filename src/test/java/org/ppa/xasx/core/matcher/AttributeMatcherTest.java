@@ -4,8 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
-import org.ppa.xasx.core.ValueIOContext;
-import org.ppa.xasx.core.ValueNodeReader;
+import org.ppa.xasx.types.NodeReadWriter;
 
 public class AttributeMatcherTest {
 
@@ -14,81 +13,67 @@ public class AttributeMatcherTest {
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "attr", context)).thenReturn("val");
+            when(reader.getAttribute(o, "attr")).thenReturn("val");
 
-            assertTrue(matcher.match(o, context));
+            assertTrue(matcher.match(o, reader));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "attr", context)).thenReturn("va");
+            when(reader.getAttribute(o, "attr")).thenReturn("va");
 
-            assertFalse(matcher.match(o, context));
+            assertFalse(matcher.match(o, reader));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "attr", context)).thenReturn("vals");
+            when(reader.getAttribute(o, "attr")).thenReturn("vals");
 
-            assertFalse(matcher.match(o, context));
+            assertFalse(matcher.match(o, reader));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "attr1", context)).thenReturn("val");
+            when(reader.getAttribute(o, "attr1")).thenReturn("val");
 
-            assertFalse(matcher.match(o, context));
+            assertFalse(matcher.match(o, reader));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "att", context)).thenReturn("val");
+            when(reader.getAttribute(o, "att")).thenReturn("val");
 
-            assertFalse(matcher.match(o, context));
+            assertFalse(matcher.match(o, reader));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "attr", context)).thenReturn("val");
-            when(reader.getAttribute(o, "attr2", context)).thenReturn("val");
+            when(reader.getAttribute(o, "attr")).thenReturn("val");
+            when(reader.getAttribute(o, "attr2")).thenReturn("val");
 
-            assertTrue(matcher.match(o, context));
+            assertTrue(matcher.match(o, reader));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             Object o = new Object();
-            ValueIOContext context = new ValueIOContext();
-            ValueNodeReader reader = mock(ValueNodeReader.class);
-            context.setValueNodeReader(reader);
+            NodeReadWriter reader = mock(NodeReadWriter.class);
 
-            when(reader.getAttribute(o, "attr", context)).thenReturn("val2");
-            when(reader.getAttribute(o, "attr2", context)).thenReturn("val");
+            when(reader.getAttribute(o, "attr")).thenReturn("val2");
+            when(reader.getAttribute(o, "attr2")).thenReturn("val");
 
-            assertFalse(matcher.match(o, context));
+            assertFalse(matcher.match(o, reader));
         }
     }
 

@@ -3,6 +3,10 @@ package org.ppa.xasx.core;
 import java.util.List;
 
 import org.ppa.xasx.core.matcher.Matcher;
+import org.ppa.xasx.types.Rule;
+import org.ppa.xasx.types.Translate;
+import org.ppa.xasx.types.ValueMaker;
+import org.ppa.xasx.types.NodeReadWriter;
 
 /**
  * 各項目ごとの検証ルールを保持する
@@ -34,14 +38,10 @@ public class NodeDefine {
     private ValueMaker valueMaker;
 
     /**
-     * 自ノードに対する{@link ValueNodeReader}の指定。nullの場合、デフォルト値が使われる。
+     * 自ノードに対する{@link NodeReadWriter}の指定。nullの場合、デフォルト値が使われる。
      */
-    private ValueNodeReader valueNodeReader;
+    private NodeReadWriter valueNodeReader;
 
-    /**
-     * 自ノードに対する{@link valueNodeWriter}の指定。nullの場合、デフォルト値が使われる。
-     */
-    private ValueNodeWriter valueNodeWriter;
 
     public List<NodeDefine> getChildren() {
         return children;
@@ -73,16 +73,10 @@ public class NodeDefine {
     public void setValueMaker(ValueMaker merger) {
         this.valueMaker = merger;
     }
-    public ValueNodeReader getValueNodeReader() {
+    public NodeReadWriter getValueNodeReader() {
         return valueNodeReader;
     }
-    public void setValueNodeReader(ValueNodeReader valueNodeReader) {
+    public void setValueNodeReader(NodeReadWriter valueNodeReader) {
         this.valueNodeReader = valueNodeReader;
-    }
-    public ValueNodeWriter getValueNodeWriter() {
-        return valueNodeWriter;
-    }
-    public void setValueNodeWriter(ValueNodeWriter valueNodeWriter) {
-        this.valueNodeWriter = valueNodeWriter;
     }
 }

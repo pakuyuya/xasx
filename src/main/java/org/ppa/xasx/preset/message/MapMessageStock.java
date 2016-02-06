@@ -1,9 +1,11 @@
-package org.ppa.xasx.core.message;
+package org.ppa.xasx.preset.message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.ppa.xasx.core.message.MessageStock;
 
 public class MapMessageStock implements MessageStock {
     private Map<String, List<String>> messages = new HashMap<String, List<String>>();

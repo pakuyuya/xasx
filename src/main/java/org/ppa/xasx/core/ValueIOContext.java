@@ -1,5 +1,9 @@
 package org.ppa.xasx.core;
 
+import org.ppa.xasx.types.ValueMaker;
+import org.ppa.xasx.types.NodeReadWriter;
+
+
 /**
  * 値を読み込む文脈
  */
@@ -21,24 +25,14 @@ public class ValueIOContext {
     private ValueMaker defaultValueMaker;
 
     /**
-     * 値読み込みアダプタ
+     * 値読み書きアダプタ
      */
-    private ValueNodeReader valueNodeReader;
+    private NodeReadWriter valueNodeReaderWriter;
 
     /**
-     * デフォルトの値読み込みアダプタ
+     * デフォルトの値読み書きアダプタ
      */
-    private ValueNodeReader defaultValueNodeReader;
-
-    /**
-     * 値書き込みアダプタ
-     */
-    private ValueNodeWriter valueNodeWriter;
-
-    /**
-     * デフォルトの値書き込みアダプタ
-     */
-    private ValueNodeWriter defaultValueNodeWriter;
+    private NodeReadWriter defaultValueNodeReader;
 
 
     public String getGivenName() {
@@ -65,36 +59,19 @@ public class ValueIOContext {
         this.defaultValueMaker = defaultValueResolver;
     }
 
-    public ValueNodeReader getValueNodeReader() {
-        return valueNodeReader;
+    public NodeReadWriter getValueNodeReaderWriter() {
+        return valueNodeReaderWriter;
     }
 
-    public void setValueNodeReader(ValueNodeReader valueNodeReader) {
-        this.valueNodeReader = valueNodeReader;
+    public void setValueNodeReaderWriter(NodeReadWriter valueNodeReader) {
+        this.valueNodeReaderWriter = valueNodeReader;
     }
 
-    public ValueNodeReader getDefaultValueNodeReader() {
+    public NodeReadWriter getDefaultValueNodeReader() {
         return defaultValueNodeReader;
     }
 
-    public void setDefaultValueNodeReader(ValueNodeReader defaultValueNodeReader) {
+    public void setDefaultValueNodeReader(NodeReadWriter defaultValueNodeReader) {
         this.defaultValueNodeReader = defaultValueNodeReader;
     }
-
-    public ValueNodeWriter getValueNodeWriter() {
-        return valueNodeWriter;
-    }
-
-    public void setValueNodeWriter(ValueNodeWriter valueNodeWriter) {
-        this.valueNodeWriter = valueNodeWriter;
-    }
-
-    public ValueNodeWriter getDefaultValueNodeWriter() {
-        return defaultValueNodeWriter;
-    }
-
-    public void setDefaultValueNodeWriter(ValueNodeWriter defaultValueNodeWriter) {
-        this.defaultValueNodeWriter = defaultValueNodeWriter;
-    }
-
 }

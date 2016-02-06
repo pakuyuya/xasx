@@ -42,7 +42,7 @@ public class XasXLangUtil {
     }
 
     /**
-     * 例外を送出しないClass#forName
+     * 例外を送出しないClass.forName
      * @param className
      * @return
      */

@@ -2,7 +2,7 @@ package org.ppa.xasx.core.matcher;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
-import org.ppa.xasx.core.ValueIOContext;
+import org.ppa.xasx.types.NodeReadWriter;
 
 /**
  * 属性マッチャー
@@ -17,8 +17,8 @@ public class AttributeMatcher implements Matcher {
     }
 
     @Override
-    public boolean match(Object o, ValueIOContext context) {
-        String attribute = context.getValueNodeReader().getAttribute(o, name, context);
+    public boolean match(Object o, NodeReadWriter readWriter) {
+        String attribute = readWriter.getAttribute(o, name);
         return equal(attribute, this.pattern);
     }
 }

@@ -16,9 +16,9 @@ import java.util.Map.Entry;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.ppa.xasx.core.NodeDefine;
-import org.ppa.xasx.core.Rule;
-import org.ppa.xasx.core.Translate;
 import org.ppa.xasx.core.matcher.MatcherHelper;
+import org.ppa.xasx.types.Rule;
+import org.ppa.xasx.types.Translate;
 import org.ppa.xasx.util.XmlElementData;
 import org.ppa.xasx.util.XasXXmlUtil;
 import org.xml.sax.SAXException;
