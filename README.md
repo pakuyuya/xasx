@@ -1,3 +1,6 @@
+
+ last build ![a](https://circleci.com/gh/pakuyuya/xasx.png?circle-token=32161a51b19b1abd4b55346145f25a09f96c09bb) |
+
  * XMLファイルの検証を、同じくXMLで書かれたvalidation定義で検証で行うシンプルなライブラリ。
  * Java 8+
 
