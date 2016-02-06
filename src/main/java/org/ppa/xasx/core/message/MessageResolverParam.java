@@ -1,9 +1,13 @@
-package org.ppa.xasx.preset.message;
+package org.ppa.xasx.core.message;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BundleMessageResolverParam {
+/**
+ * MessageResolverのパラメータ
+ * @see MessageResolver
+ */
+public class MessageResolverParam {
     private String template;
     private List<Object> params = new ArrayList<>();
 
@@ -30,5 +34,11 @@ public class BundleMessageResolverParam {
      */
     public void setParams(List<Object> params) {
         this.params = params;
+    }
+
+    public void addParam(Object ... values) {
+        for (Object value : values){
+            params.add(value);
+        }
     }
 }

@@ -2,11 +2,11 @@ package org.ppa.xasx.preset.rule;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
-import java.text.MessageFormat;
-
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.message.MessageResolver;
+import org.ppa.xasx.core.message.MessageResolverParam;
 import org.ppa.xasx.core.validate.ValidateContext;
 import org.ppa.xasx.types.Rule;
 
@@ -34,7 +34,12 @@ public class RepeatRule implements Rule {
             String maxtxt = (isNumeric(max)) ? "" : max;
             String range = mintxt + "-" + maxtxt;
 
-            return Rule.error(name, MessageFormat.format(msgTemplate, name, range, cnt));
+            MessageResolver resolver = context.getMessageResolver();
+            MessageResolverParam resolveParam = new MessageResolverParam();
+            resolveParam.setTemplate(this.msgTemplate);
+            resolveParam.addParam(name, range, cnt);
+
+            return Rule.error(name, resolver.resolve(resolveParam));
         }
         return null;
     }
