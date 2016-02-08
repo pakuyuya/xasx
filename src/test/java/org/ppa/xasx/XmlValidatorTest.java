@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class XmlValidatorTest {
 
-    private final String CLASSPATH_BASE = "org/ppa/xasx/XmlValidator/";
+    private final String CLASSPATH_BASE = "org/ppa/xasx/testXmlValidator/";
 
     @Test
     public void test001Standard(){
