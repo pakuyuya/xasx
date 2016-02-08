@@ -125,7 +125,7 @@ public class ValueNodeProxy implements ValueNode {
 
         List<String> names = readWriter.getAttributeNames(node);
         for (String name : names) {
-            attributesCache.put(name, readWriter.getAttribute(names, name));
+            attributesCache.put(name, readWriter.getAttribute(node, name));
         }
     }
 

@@ -6,7 +6,10 @@ import java.util.Map;
 
 import org.ppa.xasx.core.ValueIOContext;
 import org.ppa.xasx.core.XasXHelper;
+import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.rulefileparser.ConfigsPropKey;
+import org.ppa.xasx.types.NodeReadWriter;
+import org.ppa.xasx.types.NodeStringifyer;
 import org.ppa.xasx.types.ValueMaker;
 
 /**
@@ -20,12 +23,17 @@ public class ValidateEngineHelper {
      */
     public static void setupValueReadContext(ValueIOContext context, Map<String, String> options) {
         try {
+            if (options.containsKey(ConfigsPropKey.DEFAULT_VALUE_NODE_READWRITER)) {
+                String className = options.get(ConfigsPropKey.DEFAULT_VALUE_NODE_READWRITER);
+                NodeReadWriter value = cast(Class.forName(className).newInstance());
+                context.setDefaultNodeReadWriter(value);
+            }
             if (options.containsKey(ConfigsPropKey.DEFAULT_VALUE_MAKER)) {
-                ValueMaker value = cast(Class.forName(options.get(options.get(ConfigsPropKey.DEFAULT_VALUE_MAKER))));
+                ValueMaker value = cast(Class.forName(options.get(ConfigsPropKey.DEFAULT_VALUE_MAKER)).newInstance());
                 context.setDefaultValueMaker(value);
             }
-        } catch (ClassNotFoundException e) {
-            XasXHelper.wrapException(e);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            throw XasXHelper.wrapException(e);
         }
     }
 
@@ -35,6 +43,19 @@ public class ValidateEngineHelper {
      * @param options プロパティ値
      */
     public static void setupValidationContext(ValidateContext context, Map<String, String> options) {
-        // do nothing.
+        try {
+            if (options.containsKey(ConfigsPropKey.MESSAGE_RESOLVER)) {
+                String className = options.get(ConfigsPropKey.MESSAGE_RESOLVER);
+                MessageResolver value = cast(Class.forName(className).newInstance());
+                context.setMessageResolver(value);
+            }
+            if (options.containsKey(ConfigsPropKey.NODE_STRINGIFYER)) {
+                String className = options.get(ConfigsPropKey.NODE_STRINGIFYER);
+                NodeStringifyer value = cast(Class.forName(className).newInstance());
+                context.setNodeStringifyer(value);
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            throw XasXHelper.wrapException(e);
+        }
     }
 }

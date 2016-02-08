@@ -27,11 +27,14 @@ public class ValidateEngine {
      * @param validateNode
      * @return
      */
-    public void validateRecursive(final Object root, final NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
+    public void validateRecursive(final Object root, final NodeDefine rootDefines, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
 
-        ValueNode node = createNode(root, nodeDefine, valueIOContext);
-        if (isMatchNode(node, nodeDefine.getMatchers(), valueIOContext)) {
-            validateRecurciveInner(node, nodeDefine, valueIOContext, validateContext, errors);
+        for (NodeDefine rootDefine : rootDefines.getChildren()) {
+            ValueNode node = createNode(root, rootDefine, valueIOContext);
+
+            if (isMatchNode(node, rootDefine.getMatchers(), valueIOContext)) {
+                validateRecurciveInner(node, rootDefine, valueIOContext, validateContext, errors);
+            }
         }
     }
 
@@ -44,42 +47,75 @@ public class ValidateEngine {
                 errors.push(error.getName(), error.getMessage());
         }
 
+        validateChildren(node, nodeDefine, valueIOContext, validateContext, errors);
+
+        validateContext.getValidateStack().pop();
+    }
+
+    private void validateChildren(final ValueNode node, final NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
         List<Object> children = new ArrayList<Object>(node.getChildrenCount());
         for (int i=0, len=node.getChildrenCount(); i<len; i++) {
             children.add(node.getChild(i));
         }
 
+        List<NodeDefine> childDefines = nodeDefine.getChildren();
+
+        boolean matchedValidNodes[] = new boolean[nodeDefine.getChildren().size()];
+        for (int i=0; i<matchedValidNodes.length; i++) {
+            matchedValidNodes[i] = false;
+        }
+
         for (Object child : children) {
             validchildLoop:
-            for (NodeDefine childDefine : nodeDefine.getChildren()) {
+            for (int i = 0; i<childDefines.size(); i++) {
+                NodeDefine childDefine = childDefines.get(i);
                 ValueIOContext childValueIOCtx = cast(cloneInstance(valueIOContext));
-                childValueIOCtx.setValueNodeReaderWriter(childDefine.getValueNodeReader() != null ? childDefine.getValueNodeReader() : childValueIOCtx.getDefaultValueNodeReader());
 
-                for (Matcher matcher : childDefine.getMatchers()) {
-                    if (!matcher.match(child, childValueIOCtx.getValueNodeReaderWriter())) {
-                        continue validchildLoop;
-                    }
+                ValueNode childNode = createNode(child, childDefine, childValueIOCtx);
+                if (!isMatchNode(childNode, childDefine.getMatchers(), childValueIOCtx)) {
+                    continue validchildLoop;
                 }
                 ValidateContext childValidateCtx = cast(cloneInstance(validateContext));
-                ValueNode childNode = createNode(child, childDefine, childValueIOCtx);
                 validateRecurciveInner(childNode, childDefine, childValueIOCtx, childValidateCtx, errors);
+
+                matchedValidNodes[i] = true;
+            }
+        }
+
+        for (int i=0; i<matchedValidNodes.length; i++) {
+            if (!matchedValidNodes[i]) {
+                ValidateContext childValidateCtx = cast(cloneInstance(validateContext));
+                terminateUnmatchedNodeDefine(childDefines.get(i), childValidateCtx, errors);
             }
         }
 
         for (NodeDefine validChild : nodeDefine.getChildren()) {
-            for (Rule rules : validChild.getRules()) {
-                ErrorMessage error = rules.onLeaveScope(validChild, validateContext);
+            for (Rule rule : validChild.getRules()) {
+                ErrorMessage error = rule.onLeaveScope(validChild, validateContext);
                 if (error != null)
                     errors.push(error.getName(), error.getMessage());
             }
         }
+    }
 
-        validateContext.getValidateStack().pop();
+    private void terminateUnmatchedNodeDefine(final NodeDefine nodeDefine, final ValidateContext context, MessageStock errors) {
+        context.getValidateStack().push(nodeDefine);
+        for (NodeDefine child : nodeDefine.getChildren()) {
+            for (Rule rule : child.getRules()) {
+                ErrorMessage error = rule.onLeaveScope(nodeDefine, context);
+                if (error != null)
+                    errors.push(error.getName(), error.getMessage());
+            }
+            for (NodeDefine childNode :nodeDefine.getChildren()) {
+                terminateUnmatchedNodeDefine(childNode, context, errors);
+            }
+        }
+        context.getValidateStack().pop();
     }
 
     private boolean isMatchNode(ValueNode node, List<Matcher> matchers, ValueIOContext valueIOContext){
         for (Matcher matcher : matchers) {
-            if (!matcher.match(node, valueIOContext.getValueNodeReaderWriter())) {
+            if (!matcher.match(node)) {
                 return false;
             }
         }
@@ -88,7 +124,7 @@ public class ValidateEngine {
 
     private NodeReadWriter resolveValueNodeReader(NodeDefine nodeDefine, ValueIOContext valueIOContext) {
         return (nodeDefine.getValueNodeReader() != null)
-                    ? nodeDefine.getValueNodeReader() : valueIOContext.getDefaultValueNodeReader();
+                    ? nodeDefine.getValueNodeReader() : valueIOContext.getDefaultNodeReadWriter();
     }
 
     private ValueMaker resolveValueMaker(NodeDefine nodeDefine, ValueIOContext valueIOContext) {

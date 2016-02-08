@@ -1,5 +1,6 @@
 package org.ppa.xasx.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ppa.xasx.core.matcher.Matcher;
@@ -15,22 +16,22 @@ public class NodeDefine {
     /**
      * 子要素のNodeDefineのリスト
      */
-    private List<NodeDefine> children;
+    private List<NodeDefine> children = new ArrayList<>();
 
     /**
      * 自ノードに対する検証ルール
      */
-    private List<Rule> rules;
+    private List<Rule> rules = new ArrayList<>();
 
     /**
      * 自ノードに対する事前変換処理
      */
-    private List<Translate> translates;
+    private List<Translate> translates = new ArrayList<>();
 
     /**
      * ノードとのマッチングルール
      */
-    private List<Matcher> matchers;
+    private List<Matcher> matchers = new ArrayList<>();
 
     /**
      * 自ノードに対する{@link ValueMaker}の指定。nullの場合、デフォルト値が使われる。

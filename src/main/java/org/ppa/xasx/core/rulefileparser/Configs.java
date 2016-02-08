@@ -6,14 +6,14 @@ import java.util.Map;
 import org.ppa.xasx.core.NodeDefine;
 
 public class Configs {
-    private NodeDefine rootNode;
+    private NodeDefine validRoots;
     private Map<String, String> props = new HashMap<String, String>();
 
-    public NodeDefine getRootNode() {
-        return rootNode;
+    public NodeDefine getValidRoots() {
+        return validRoots;
     }
-    public void setRootNode(NodeDefine rootNode) {
-        this.rootNode = rootNode;
+    public void setValidRoots(NodeDefine rootNode) {
+        this.validRoots = rootNode;
     }
     public Map<String, String> getProps() {
         return props;

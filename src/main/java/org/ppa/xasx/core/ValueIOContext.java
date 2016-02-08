@@ -32,7 +32,7 @@ public class ValueIOContext {
     /**
      * デフォルトの値読み書きアダプタ
      */
-    private NodeReadWriter defaultValueNodeReader;
+    private NodeReadWriter defaultNodeReadWriter;
 
 
     public String getGivenName() {
@@ -63,15 +63,15 @@ public class ValueIOContext {
         return valueNodeReaderWriter;
     }
 
-    public void setValueNodeReaderWriter(NodeReadWriter valueNodeReader) {
-        this.valueNodeReaderWriter = valueNodeReader;
+    public void setValueNodeReaderWriter(NodeReadWriter defaultNodeReadWriter) {
+        this.valueNodeReaderWriter = defaultNodeReadWriter;
     }
 
-    public NodeReadWriter getDefaultValueNodeReader() {
-        return defaultValueNodeReader;
+    public NodeReadWriter getDefaultNodeReadWriter() {
+        return defaultNodeReadWriter;
     }
 
-    public void setDefaultValueNodeReader(NodeReadWriter defaultValueNodeReader) {
-        this.defaultValueNodeReader = defaultValueNodeReader;
+    public void setDefaultNodeReadWriter(NodeReadWriter defaultNodeReadWriter) {
+        this.defaultNodeReadWriter = defaultNodeReadWriter;
     }
 }

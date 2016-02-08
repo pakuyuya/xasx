@@ -31,8 +31,10 @@ public class XasXLangUtil {
                 .stream()
                 .forEach(f ->{
                     try {
+                        f.setAccessible(true);
                         f.set(ret, f.get(o));
-                    } catch (IllegalArgumentException | IllegalAccessException e) {}
+                    } catch (IllegalArgumentException | IllegalAccessException e) {
+                    }
                 });
 
             return ret;

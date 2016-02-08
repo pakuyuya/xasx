@@ -1,9 +1,12 @@
 package org.ppa.xasx.core.matcher;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import org.junit.Test;
+import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.ValueNodeProxy;
+import org.ppa.xasx.simple.SimpleNode;
+import org.ppa.xasx.simple.SimpleNodeReadWriter;
 import org.ppa.xasx.types.NodeReadWriter;
 
 public class AttributeMatcherTest {
@@ -12,68 +15,72 @@ public class AttributeMatcherTest {
     public void standardTest() {
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "attr")).thenReturn("val");
-
-            assertTrue(matcher.match(o, reader));
+            o.getAttributes().put("attr", "val");
+            assertTrue(matcher.match(node));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "attr")).thenReturn("va");
-
-            assertFalse(matcher.match(o, reader));
+            assertFalse(matcher.match(node));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "attr")).thenReturn("vals");
+            o.getAttributes().put("attr", "vals");
 
-            assertFalse(matcher.match(o, reader));
+            assertFalse(matcher.match(node));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "attr1")).thenReturn("val");
+            o.getAttributes().put("attr1", "val");
 
-            assertFalse(matcher.match(o, reader));
+            assertFalse(matcher.match(node));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "att")).thenReturn("val");
+            o.getAttributes().put("att", "val");
 
-            assertFalse(matcher.match(o, reader));
+            assertFalse(matcher.match(node));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "attr")).thenReturn("val");
-            when(reader.getAttribute(o, "attr2")).thenReturn("val");
+            o.getAttributes().put("attr", "val");
+            o.getAttributes().put("attr2", "val");
 
-            assertTrue(matcher.match(o, reader));
+            assertTrue(matcher.match(node));
         }
         {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
-            Object o = new Object();
-            NodeReadWriter reader = mock(NodeReadWriter.class);
+            SimpleNode o = new SimpleNode();
+            NodeReadWriter reader = new SimpleNodeReadWriter();
+            ValueNode node = new ValueNodeProxy(o, reader, null);
 
-            when(reader.getAttribute(o, "attr")).thenReturn("val2");
-            when(reader.getAttribute(o, "attr2")).thenReturn("val");
+            o.getAttributes().put("attr", "val2");
+            o.getAttributes().put("attr2", "val");
 
-            assertFalse(matcher.match(o, reader));
+            assertFalse(matcher.match(node));
         }
     }
 

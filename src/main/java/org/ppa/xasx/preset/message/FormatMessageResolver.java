@@ -13,7 +13,6 @@ import org.ppa.xasx.core.message.MessageResolverParam;
 public class FormatMessageResolver implements MessageResolver {
     @Override
     public String resolve(MessageResolverParam param) {
-        return MessageFormat.format(param.getTemplate(), param.getParams());
+        return MessageFormat.format(param.getTemplate(), param.getParams().toArray());
     }
-
 }

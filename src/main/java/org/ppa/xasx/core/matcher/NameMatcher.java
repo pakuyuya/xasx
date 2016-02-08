@@ -1,18 +1,23 @@
 package org.ppa.xasx.core.matcher;
 
-import org.ppa.xasx.types.NodeReadWriter;
+import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.validate.ValidateContext;
 
 public class NameMatcher implements Matcher {
+    private String pattern;
 
     public NameMatcher(String pattern) {
         this.pattern = pattern;
     }
-    private String pattern;
 
     @Override
-    public boolean match(Object o, NodeReadWriter readWriter) {
-        String name = readWriter.getName(o);
-        return name.equals(pattern);
+    public boolean match(ValueNode node) {
+        final String name = node.getName();
+        return pattern.equals(name);
     }
 
+    @Override
+    public void mapToNode(ValueNode dest, ValidateContext context) {
+        dest.setName(pattern);
+    }
 }

@@ -3,7 +3,7 @@
 <settings>
 
 </settings>
-<define>
+<validation>
     <info>
         <meta>
             <rule:length min="1" max="40" />
@@ -13,5 +13,5 @@
             <rule:length min="1" max="20" />
         </meta>
     </info>
-</define>
+</validation>
 </rulefile>

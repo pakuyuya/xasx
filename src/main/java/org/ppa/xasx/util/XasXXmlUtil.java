@@ -76,4 +76,13 @@ public class XasXXmlUtil {
         Node node = document.getDocumentElement();
         return convertXmlElementData(node);
     }
+
+    static public String encodeXmlValue(String value) {
+        return value
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("&", "&amp;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
 }

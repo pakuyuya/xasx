@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rulefile>
+    <settings>
+        <rules>
+            <rule name="regex" class="org.ppa.xasx.preset.rule.RegexRule" />
+            <rule name="repeat" class="org.ppa.xasx.preset.rule.RepeatRule" />
+            <rule name="length" class="org.ppa.xasx.preset.rule.LengthRule" />
+            <rule name="require" class="org.ppa.xasx.preset.rule.RequireRule" />
+        </rules>
+    </settings>
+    <validation>
+        <info>
+            <meta attr="">
+                <rule:length min="1" max="40" />
+            </meta>
+            <meta attr1="test">
+                <rule:require />
+                <rule:length min="1" max="20" />
+            </meta>
+        </info>
+    </validation>
+</rulefile>

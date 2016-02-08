@@ -1,5 +1,5 @@
 
- last build ![a](https://circleci.com/gh/pakuyuya/xasx.png?circle-token=32161a51b19b1abd4b55346145f25a09f96c09bb) |
+ last build ![a](https://circleci.com/gh/pakuyuya/xasx.png?circle-token=32161a51b19b1abd4b55346145f25a09f96c09bb)
 
  * XMLファイルの検証を、同じくXMLで書かれたvalidation定義で検証で行うシンプルなライブラリ。
  * Java 8+
@@ -47,10 +47,14 @@
 <rulefile>
   <settings>
     <prop name="rule-prefix">rule:</prop>
+    <prop name="trans-prefix">trans:</prop>
     <rules>
-      <rule name="regex" class="org.ppa.xmlvalidator.preset.RegexRule" />
-      <rule name="repeat" class="org.ppa.xmlvalidator.preset.RepeatRule" />
+      <rule name="regex" class="org.ppa.xasx.preset.rule.RegexRule" />
+      <rule name="repeat" class="org.ppa.xasx.preset.rule.RepeatRule" />
     </rule>
+    <translats>
+      <trans name="trim" class="org.ppa.xml.preset.translate.TrimValueTranslate" />
+    </translats>
   </settings>
   <validation>
   <books>
@@ -59,10 +63,12 @@
         <rule:repeat max="1" />
       </ids>
       <ids id-type="type-A">
-        <rule:regex  pattern="^\d{3}-\d{7}$" trim="ASCII" />
+        <trans:trim />
+        <rule:regex  pattern="^\d{3}-\d{7}$" />
       </ids>
       <ids id-type="type-B">
-        <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" trim="ASCII" />
+        <trans:trim />
+        <rule:regex  pattern="^DIC:[a-z]{4}:[a-z]{3}X$" />
       </ids>
     </book>
   </books>

@@ -13,4 +13,19 @@ public class ConfigsPropKey {
      * 使用するValueNodeReaderの初期値
      */
     final static public String DEFAULT_VALUE_NODE_READWRITER = "defualt-value-node-readwriter";
+
+    /**
+     * 使用するMessageResolverの初期値
+     */
+    final static public String MESSAGE_RESOLVER = "massage-resolver";
+
+    /**
+     * ワイルドカード表現
+     */
+    final static public String WILDCARD_DISPLAY = "wildcard-display";
+
+    /**
+     * 使用するNodeStringfyer
+     */
+    final static public String NODE_STRINGIFYER = "node-stringifyer";
 }

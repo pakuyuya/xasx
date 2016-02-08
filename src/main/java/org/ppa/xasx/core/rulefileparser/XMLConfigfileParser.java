@@ -64,7 +64,7 @@ public class XMLConfigfileParser implements ConfigfileParser {
                         loadSettings(elm, localTranslateClassMap, localRuleClassMap, localProperties, defaultTranslats);
                         break;
                     case "validation":
-                        ret.setRootNode(convertValidation(elm, localTranslateClassMap, localRuleClassMap, localProperties, defaultTranslats));
+                        ret.setValidRoots(convertValidation(elm, localTranslateClassMap, localRuleClassMap, localProperties, defaultTranslats));
                         break;
                     }
                 }
@@ -101,7 +101,7 @@ public class XMLConfigfileParser implements ConfigfileParser {
                 if (name.startsWith(rulePrefix)) {
                     String ruleName = name.substring(rulePrefix.length());
                     if (!ruleClassMap.containsKey(ruleName)){
-                        throw new RuntimeException("rule " + ruleName + " is not defined.");
+                        throw new RuntimeException("rule '" + ruleName + "' is not defined.");
                     }
 
                     try {

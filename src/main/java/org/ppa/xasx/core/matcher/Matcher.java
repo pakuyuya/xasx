@@ -1,10 +1,12 @@
 package org.ppa.xasx.core.matcher;
 
-import org.ppa.xasx.types.NodeReadWriter;
+import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.validate.ValidateContext;
 
 /**
- * Nodeの値が正しいか検証する。
+ * ValueNodeが条件に合致しているか検証する。
  */
 public interface Matcher {
-    public boolean match(Object o, NodeReadWriter readWriter);
+    public boolean match(ValueNode node);
+    public void mapToNode(ValueNode dest, ValidateContext context);
 }

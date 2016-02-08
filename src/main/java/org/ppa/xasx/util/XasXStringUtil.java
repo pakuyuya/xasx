@@ -20,6 +20,15 @@ public class XasXStringUtil {
     }
 
     /**
+     * StringUtils.isNotEmpty()相当の機能
+     * @param cs
+     * @return
+     */
+    final static public boolean isNotEmpty(CharSequence cs) {
+        return cs != null && cs.length() > 0;
+    }
+
+    /**
      * StringUtils.isBlank()相当の機能。というかパクリ
      *
      * @param cs

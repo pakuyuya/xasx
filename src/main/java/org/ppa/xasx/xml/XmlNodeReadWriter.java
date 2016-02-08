@@ -47,7 +47,7 @@ public class XmlNodeReadWriter implements NodeReadWriter {
         List<String> names = new ArrayList<String>(len);
 
         for (int i = 0; i < len; i++) {
-            names.set(i, attributes.item(i).getNodeName());
+            names.add(i, attributes.item(i).getNodeName());
         }
         return names;
     }

@@ -1,6 +1,7 @@
 package org.ppa.xasx.preset.message;
 
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverParam;
@@ -11,8 +12,15 @@ import org.ppa.xasx.core.message.MessageResolverParam;
  *
  */
 public class BundleMessageResolver implements MessageResolver {
+    private ResourceBundle bundle = null;
+
+    public void setResourceBundle(String bundleName) {
+        bundle = ResourceBundle.getBundle("bundleName");
+    }
+
     @Override
     public String resolve(MessageResolverParam param) {
-        return MessageFormat.format(param.getTemplate(), param.getParams());
+        String template = bundle.getString(param.getTemplate());
+        return MessageFormat.format(template, param.getParams().toArray());
     }
 }
