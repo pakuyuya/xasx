@@ -19,8 +19,8 @@ import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.matcher.MatcherHelper;
 import org.ppa.xasx.types.Rule;
 import org.ppa.xasx.types.Translate;
-import org.ppa.xasx.util.XmlElementData;
 import org.ppa.xasx.util.XasXXmlUtil;
+import org.ppa.xasx.util.XmlElementData;
 import org.xml.sax.SAXException;
 
 
@@ -83,12 +83,12 @@ public class XMLConfigfileParser implements ConfigfileParser {
 
         node.getMatchers().addAll(MatcherHelper.createMatchers(validation));
 
-        String rulePrefix = properties.get("rule-prefix");
+        String rulePrefix = properties.get(ConfigsPropKey.RULE_PREFIX);
         if (isEmpty(rulePrefix)) {
             rulePrefix = "rule:";
         }
 
-        String transPrefix = properties.get("trans-prefix");
+        String transPrefix = properties.get(ConfigsPropKey.TRANSLATE_PREFIX);
         if (isEmpty(transPrefix)) {
             transPrefix = "trans:";
         }
@@ -117,7 +117,7 @@ public class XMLConfigfileParser implements ConfigfileParser {
                 } else if (name.startsWith(transPrefix)) {
                     String transName = name.substring(transPrefix.length());
                     if (!translateClassMap.containsKey(transName)){
-                        throw new RuntimeException("rule " + transName + " is not defined.");
+                        throw new RuntimeException("translate " + transName + " is not defined.");
                     }
 
                     try {
@@ -200,7 +200,7 @@ public class XMLConfigfileParser implements ConfigfileParser {
             if (child instanceof XmlElementData) {
                 XmlElementData elm = cast(child);
 
-                if (elm.getName().equals("transfer")) {
+                if (elm.getName().equals("translate")) {
                     if (!elm.getAttributes().containsKey("name") || !elm.getAttributes().containsKey("class")) {
                         continue;
                     }

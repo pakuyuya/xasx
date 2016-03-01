@@ -6,7 +6,7 @@ import org.ppa.xasx.types.Translate;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
-public class TrimValueTranslate implements Translate {
+public class TrimTranslate implements Translate {
 
     private final String TYPE_ASCII = "ascii";
     private final String TYPE_UNICODE = "unicode";

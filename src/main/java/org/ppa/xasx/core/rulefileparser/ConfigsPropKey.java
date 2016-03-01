@@ -4,6 +4,16 @@ package org.ppa.xasx.core.rulefileparser;
  * 設定ファイルのpropキー
  */
 public class ConfigsPropKey {
+
+    /**
+     *
+     */
+    final static public String RULE_PREFIX = "rule-prefix";
+
+    /**
+     *
+     */
+    final static public String TRANSLATE_PREFIX = "translate-prefix";
     /**
      * 使用するValueMakerの初期値
      */

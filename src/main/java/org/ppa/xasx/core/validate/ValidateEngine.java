@@ -12,9 +12,10 @@ import org.ppa.xasx.core.ValueNode;
 import org.ppa.xasx.core.ValueNodeProxy;
 import org.ppa.xasx.core.matcher.Matcher;
 import org.ppa.xasx.core.message.MessageStock;
-import org.ppa.xasx.types.Rule;
-import org.ppa.xasx.types.ValueMaker;
 import org.ppa.xasx.types.NodeReadWriter;
+import org.ppa.xasx.types.Rule;
+import org.ppa.xasx.types.Translate;
+import org.ppa.xasx.types.ValueMaker;
 
 /**
  * 検証のメインロジック
@@ -38,8 +39,12 @@ public class ValidateEngine {
         }
     }
 
-    private void validateRecurciveInner(final ValueNode node, final NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
+    private void validateRecurciveInner(ValueNode node, NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
         validateContext.getValidateStack().push(nodeDefine);
+
+        for (Translate trans: nodeDefine.getTranslates()) {
+            node = trans.translate(node, validateContext);
+        }
 
         for (Rule rule : nodeDefine.getRules()) {
             ErrorMessage error = rule.validateNode(node, nodeDefine, validateContext);
@@ -52,7 +57,7 @@ public class ValidateEngine {
         validateContext.getValidateStack().pop();
     }
 
-    private void validateChildren(final ValueNode node, final NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
+    private void validateChildren(ValueNode node, NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
         List<Object> children = new ArrayList<Object>(node.getChildrenCount());
         for (int i=0, len=node.getChildrenCount(); i<len; i++) {
             children.add(node.getChild(i));
