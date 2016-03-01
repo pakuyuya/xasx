@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.ppa.xasx.types.ValueMaker;
 import org.ppa.xasx.types.NodeReadWriter;
+import org.ppa.xasx.types.ValueMaker;
 import org.ppa.xasx.util.ValueCache;
 
 /**
@@ -26,6 +26,11 @@ public class ValueNodeProxy implements ValueNode {
         this.node = node;
         this.readWriter = readWriter;
         this.valueMaker = valueMaker;
+    }
+
+    @Override
+    public boolean isValue() {
+        return readWriter.isValue(node);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.ppa.xasx.preset.rule;
 
+import static org.ppa.xasx.util.XasXStringUtil.*;
+
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.ValueNode;
@@ -7,17 +9,12 @@ import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverHelper;
 import org.ppa.xasx.core.validate.ValidateContext;
 import org.ppa.xasx.types.Rule;
-
-import static org.ppa.xasx.util.XasXStringUtil.*;
+import org.ppa.xasx.util.XasXUtil;
 
 /**
  * 正規表現ルール
  */
 public class RegexRule implements Rule {
-
-    final public String ON_EMPTY_YES = "yes";
-    final public String ON_EMPTY_NO = "no";
-
     /**
      * 正規表現のパターンです。
      */
@@ -29,9 +26,9 @@ public class RegexRule implements Rule {
     private String msgTemplate = "{0}の形式が不正です。";
 
     /**
-     * {@code "yes"} を設定すると、値が空文字・nullの場合でも検証を行います。
+     * {@code "no"} を設定すると、値が空文字・nullの場合でも検証を行います。
      */
-    private String onEmpty = ON_EMPTY_NO;
+    private String ignoreEmpty = "yes";
 
 
     public String getPattern() {
@@ -48,21 +45,19 @@ public class RegexRule implements Rule {
         this.msgTemplate = msgTemplate;
     }
 
-    public String getOnEmpty() {
-        return onEmpty;
+    public String getIgnoreEmpty() {
+        return ignoreEmpty;
     }
-    public void setOnEmpty(String onEmpty) {
-        this.onEmpty = onEmpty;
+    public void setIgnoreEmpty(String ignoreEmpty) {
+        this.ignoreEmpty = ignoreEmpty;
     }
-
-
     @Override
     public ErrorMessage validateNode(ValueNode node, NodeDefine validNode, ValidateContext context) {
         String name = context.getNodeStringifyer().convert(context.getValidateStack(), context);
         final String value = node.getValue();
         final MessageResolver resolver = context.getMessageResolver();
 
-        if (!onEmpty.equals(ON_EMPTY_YES) && isEmpty(value)) {
+        if (isEmpty(value) && XasXUtil.isTrueText(ignoreEmpty)) {
             return Rule.ok();
         }
 

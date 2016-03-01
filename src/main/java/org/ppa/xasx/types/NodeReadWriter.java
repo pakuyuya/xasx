@@ -7,6 +7,8 @@ import java.util.List;
  */
 public interface NodeReadWriter {
 
+    public boolean isValue(Object node);
+
     /**
      * Node名を取得します。
      * @param node 対象オブジェクト

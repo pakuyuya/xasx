@@ -1,5 +1,7 @@
 package org.ppa.xasx.preset.rule;
 
+import static org.ppa.xasx.util.XasXStringUtil.*;
+
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.ValueNode;
@@ -7,8 +9,6 @@ import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverHelper;
 import org.ppa.xasx.core.validate.ValidateContext;
 import org.ppa.xasx.types.Rule;
-
-import static org.ppa.xasx.util.XasXStringUtil.*;
 
 public class RequireRule implements Rule {
 
@@ -34,7 +34,7 @@ public class RequireRule implements Rule {
 
     @Override
     public ErrorMessage validateNode(ValueNode node, NodeDefine validNode, ValidateContext context) {
-        if (isEmpty(node.getValue())) {
+        if (isNotEmpty(node.getValue())) {
             exists = true;
         }
         return Rule.ok();

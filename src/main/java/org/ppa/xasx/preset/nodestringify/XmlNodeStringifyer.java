@@ -1,9 +1,12 @@
 package org.ppa.xasx.preset.nodestringify;
 
+import static org.ppa.xasx.util.XasXStringUtil.*;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.ppa.xasx.core.NodeDefine;
+import org.ppa.xasx.core.ValueNode;
 import org.ppa.xasx.core.ValueNodeProxy;
 import org.ppa.xasx.core.matcher.Matcher;
 import org.ppa.xasx.core.validate.ValidateContext;
@@ -11,12 +14,6 @@ import org.ppa.xasx.preset.valuemaker.SimpleValueMaker;
 import org.ppa.xasx.simple.SimpleNode;
 import org.ppa.xasx.simple.SimpleNodeReadWriter;
 import org.ppa.xasx.types.NodeStringifyer;
-
-
-
-
-import static org.ppa.xasx.util.XasXStringUtil.*;
-
 import org.ppa.xasx.util.XasXXmlUtil;
 
 public class XmlNodeStringifyer implements NodeStringifyer {
@@ -30,7 +27,7 @@ public class XmlNodeStringifyer implements NodeStringifyer {
 
     @Override
     public String convert(NodeDefine define, ValidateContext context) {
-        ValueNodeProxy node = new ValueNodeProxy(new SimpleNode(), new SimpleNodeReadWriter(), new SimpleValueMaker());
+        ValueNode node = new ValueNodeProxy(new SimpleNode(), new SimpleNodeReadWriter(), new SimpleValueMaker());
 
         for (Matcher matcher : define.getMatchers()) {
             matcher.mapToNode(node, context);

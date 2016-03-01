@@ -13,6 +13,11 @@ import org.w3c.dom.Node;
 public class XmlNodeReadWriter implements NodeReadWriter {
 
     @Override
+    public boolean isValue(Object node) {
+        return node != null && node instanceof String;
+    }
+
+    @Override
     public String getName(Object node) {
         Node n = (Node)node;
 
@@ -37,7 +42,13 @@ public class XmlNodeReadWriter implements NodeReadWriter {
     @Override
     public Object getChild(Object node, int index) {
         Node n = (Node)node;
-        return n.getChildNodes().item(index);
+        Node child = n.getChildNodes().item(index);
+
+        if (child.getNodeType() == Node.TEXT_NODE) {
+            return child.getNodeValue();
+        }
+
+        return child;
     }
 
     @Override

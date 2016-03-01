@@ -90,7 +90,7 @@ public class ValidateEngine {
         for (int i=0; i<matchedValidNodes.length; i++) {
             if (!matchedValidNodes[i]) {
                 ValidateContext childValidateCtx = cast(cloneInstance(validateContext));
-                terminateUnmatchedNodeDefine(childDefines.get(i), childValidateCtx, errors);
+                terminateUnmatched(childDefines.get(i), childValidateCtx, errors);
             }
         }
 
@@ -103,7 +103,7 @@ public class ValidateEngine {
         }
     }
 
-    private void terminateUnmatchedNodeDefine(final NodeDefine nodeDefine, final ValidateContext context, MessageStock errors) {
+    private void terminateUnmatched(final NodeDefine nodeDefine, final ValidateContext context, MessageStock errors) {
         context.getValidateStack().push(nodeDefine);
         for (NodeDefine child : nodeDefine.getChildren()) {
             for (Rule rule : child.getRules()) {
@@ -112,13 +112,16 @@ public class ValidateEngine {
                     errors.push(error.getName(), error.getMessage());
             }
             for (NodeDefine childNode :nodeDefine.getChildren()) {
-                terminateUnmatchedNodeDefine(childNode, context, errors);
+                terminateUnmatched(childNode, context, errors);
             }
         }
         context.getValidateStack().pop();
     }
 
     private boolean isMatchNode(ValueNode node, List<Matcher> matchers, ValueIOContext valueIOContext){
+        if (node.isValue()) {
+            return false;
+        }
         for (Matcher matcher : matchers) {
             if (!matcher.match(node)) {
                 return false;

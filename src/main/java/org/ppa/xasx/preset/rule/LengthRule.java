@@ -9,12 +9,9 @@ import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverHelper;
 import org.ppa.xasx.core.validate.ValidateContext;
 import org.ppa.xasx.types.Rule;
+import org.ppa.xasx.util.XasXUtil;
 
 public class LengthRule implements Rule {
-
-    final public String ON_EMPTY_YES = "yes";
-    final public String ON_EMPTY_NO = "no";
-
     /**
      * 最小文字数です。指定無しの場合、下限値はありません。
      */
@@ -29,9 +26,9 @@ public class LengthRule implements Rule {
     private String msgTemplate = "{0}は{1}文字の範囲で入力してください。（{2}字）";
 
     /**
-     * {@code "yes"} を設定すると、値が空文字・nullの場合でも検証を行います。
+     * {@code "no"} を設定すると、値が空文字・nullの場合でも検証を行います。
      */
-    private String onEmpty = ON_EMPTY_NO;
+    private String ignoreEmpty = "yes";
 
 
     public String getMin() {
@@ -56,10 +53,10 @@ public class LengthRule implements Rule {
     }
 
     public String getOnEmpty() {
-        return onEmpty;
+        return ignoreEmpty;
     }
     public void setOnEmpty(String onEmpty) {
-        this.onEmpty = onEmpty;
+        this.ignoreEmpty = onEmpty;
     }
 
 
@@ -67,7 +64,7 @@ public class LengthRule implements Rule {
     public ErrorMessage validateNode(ValueNode node, NodeDefine validNode, ValidateContext context) {
         String value = node.getValue();
 
-        if (isEmpty(value)) {
+        if (isEmpty(value) && XasXUtil.isTrueText(ignoreEmpty)) {
             return Rule.ok();
         }
 

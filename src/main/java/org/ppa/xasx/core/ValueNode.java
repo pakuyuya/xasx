@@ -6,6 +6,8 @@ import java.util.List;
  * ValueNodeのインタフェース
  */
 public interface ValueNode {
+    public boolean isValue();
+
     public String getName();
     public void setName(String name);
 

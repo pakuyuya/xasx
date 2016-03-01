@@ -1,14 +1,20 @@
 package org.ppa.xasx.simple;
 
+import static org.ppa.xasx.util.XasXLangUtil.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.ppa.xasx.types.NodeReadWriter;
 
-import static org.ppa.xasx.util.XasXLangUtil.*;
-
 public class SimpleNodeReadWriter implements NodeReadWriter {
+
+    @Override
+    public boolean isValue(Object node) {
+        // TODO 自動生成されたメソッド・スタブ
+        return node != null && node instanceof String;
+    }
 
     @Override
     public String getName(Object node) {

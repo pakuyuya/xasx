@@ -55,7 +55,6 @@ public class RepeatRule implements Rule {
 
     @Override
     public ErrorMessage onLeaveScope(NodeDefine validNode, ValidateContext context) {
-
         if (    (isNumeric(min) && (cnt < Integer.valueOf(min)))
              || (isNumeric(max) && (cnt > Integer.valueOf(max)))) {
             String name = context.getNodeStringifyer().convert(context.getValidateStack(), context);
