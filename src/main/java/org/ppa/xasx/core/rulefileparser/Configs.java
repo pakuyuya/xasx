@@ -9,7 +9,7 @@ public class Configs {
     private NodeDefine validRoots;
     private Map<String, String> props = new HashMap<String, String>();
 
-    public NodeDefine getValidRoots() {
+    public NodeDefine getValidRoot() {
         return validRoots;
     }
     public void setValidRoots(NodeDefine rootNode) {

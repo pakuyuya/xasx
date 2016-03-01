@@ -3,7 +3,6 @@ package org.ppa.xasx.core.matcher;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.ppa.xasx.core.ValueNode;
 import org.ppa.xasx.core.ValueNodeProxy;
 import org.ppa.xasx.simple.SimpleNode;
 import org.ppa.xasx.simple.SimpleNodeReadWriter;
@@ -17,7 +16,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             o.getAttributes().put("attr", "val");
             assertTrue(matcher.match(node));
@@ -26,7 +25,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             assertFalse(matcher.match(node));
         }
@@ -34,7 +33,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             o.getAttributes().put("attr", "vals");
 
@@ -44,7 +43,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             o.getAttributes().put("attr1", "val");
 
@@ -54,7 +53,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             o.getAttributes().put("att", "val");
 
@@ -64,7 +63,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             o.getAttributes().put("attr", "val");
             o.getAttributes().put("attr2", "val");
@@ -75,7 +74,7 @@ public class AttributeMatcherTest {
             AttributeMatcher matcher = new AttributeMatcher("attr", "val");
             SimpleNode o = new SimpleNode();
             NodeReadWriter reader = new SimpleNodeReadWriter();
-            ValueNode node = new ValueNodeProxy(o, reader, null);
+            ValueNodeProxy node = new ValueNodeProxy(o, reader, null);
 
             o.getAttributes().put("attr", "val2");
             o.getAttributes().put("attr2", "val");

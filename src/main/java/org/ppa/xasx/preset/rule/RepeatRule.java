@@ -2,12 +2,16 @@ package org.ppa.xasx.preset.rule;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
+import java.text.MessageFormat;
+
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.XasXException;
 import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverParam;
 import org.ppa.xasx.core.validate.ValidateContext;
+import org.ppa.xasx.types.ParameterCheckable;
 import org.ppa.xasx.types.Rule;
 
 /**
@@ -26,7 +30,7 @@ import org.ppa.xasx.types.Rule;
  * &lt;/validation&gt;
  * </pre>
  */
-public class RepeatRule implements Rule {
+public class RepeatRule implements Rule, ParameterCheckable {
     /**
      * 内部用パラメータ。タグの出現カウントです。
      */
@@ -92,5 +96,30 @@ public class RepeatRule implements Rule {
     }
     public void setMsgTemplate(String msgTemplate) {
         this.msgTemplate = msgTemplate;
+    }
+
+    @Override
+    public void checkParameter(ValidateContext context) throws XasXException {
+        if (isEmpty(min) && isEmpty(max)) {
+            throw new XasXException("require either min or max. at" + context.getValidateStackText());
+        }
+
+        if (isNotEmpty(min) && (!isNumeric(min) || Integer.valueOf(min) < 0)) {
+            final String msg = MessageFormat.format("`{0}` is invalid value for {1}. at `{2}`",
+                    min, "min", context.getValidateStackText());
+            throw new XasXException(msg);
+        }
+
+        if (isNotEmpty(max) && (!isNumeric(max) || Integer.valueOf(max) < 0)) {
+            final String msg = MessageFormat.format("`{0}` is invalid value for {1}. at `{2}`",
+                    max, "max", context.getValidateStackText());
+            throw new XasXException(msg);
+        }
+
+        if (isNumeric(min) && isNumeric(max) && Integer.valueOf(min) > Integer.valueOf(max)) {
+            final String msg = MessageFormat.format("`{0}`(min) is larger than `{1}`(max). at `{2}`",
+                    min, max, context.getValidateStackText());
+            throw new XasXException(msg);
+        }
     }
 }

@@ -56,7 +56,7 @@ public class NodeDefine {
     public void setRules(List<Rule> rules) {
         this.rules = rules;
     }
-    public List<Translate> getTranslates() {
+    public List<Translate> getTranslats() {
         return translates;
     }
     public void setTranslates(List<Translate> translates) {

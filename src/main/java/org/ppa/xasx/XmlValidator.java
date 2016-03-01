@@ -63,7 +63,7 @@ public class XmlValidator {
                     .parse(xmlFile);
             Node node = document.getDocumentElement();
 
-            validateEngine.validateRecursive(node, configs.getValidRoots(), valueIOContext, validationContext, errors);
+            validateEngine.validateRecursive(node, configs.getValidRoot(), valueIOContext, validationContext, errors);
 
             return errors.getMessages();
 

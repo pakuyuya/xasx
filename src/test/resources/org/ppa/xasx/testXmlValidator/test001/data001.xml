@@ -2,4 +2,5 @@
 <info>
     <meta attr="">0123456789</meta>
     <meta attr1="test">0123456789</meta>
+    <trim> test </trim>
 </info>

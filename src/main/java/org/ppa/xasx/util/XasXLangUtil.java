@@ -1,6 +1,6 @@
 package org.ppa.xasx.util;
 
-import java.util.Arrays;
+import java.lang.reflect.Field;
 
 public class XasXLangUtil {
 
@@ -27,19 +27,34 @@ public class XasXLangUtil {
             @SuppressWarnings("unchecked")
             T ret = (T)(clazz.newInstance());
 
-            Arrays.asList(clazz.getDeclaredFields())
-                .stream()
-                .forEach(f ->{
-                    try {
-                        f.setAccessible(true);
-                        f.set(ret, f.get(o));
-                    } catch (IllegalArgumentException | IllegalAccessException e) {
-                    }
-                });
+            copyAs(ret, o, clazz);
 
             return ret;
         } catch (InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException e) {
             return null;
+        }
+    }
+    /**
+     * フィールドを全てShallow copyしたフィールドを返却
+     * @param o
+     * @return
+     */
+    private static void copyAs(Object dest, Object src, Class<?> clazz) {
+        try {
+
+            for (Field f : clazz.getDeclaredFields()) {
+                try {
+                    f.setAccessible(true);
+                    f.set(dest, f.get(src));
+                } catch (IllegalArgumentException | IllegalAccessException e) {
+                    // do nothing
+                }
+            }
+            Class<?> superClazz = clazz.getSuperclass();
+            if (superClazz != Object.class) {
+                copyAs(dest, src, superClazz);
+            }
+        } catch (SecurityException | IllegalArgumentException e) {
         }
     }
 
@@ -54,5 +69,39 @@ public class XasXLangUtil {
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    /**
+     * targetが、続く値のグループに含まれている場合は true を返却する。
+     *
+     * @param target
+     * @param inEquals
+     * @return
+     */
+    public static boolean isIn(Object target, Object ... inEquals) {
+        if (target == null) {
+            for (Object test : inEquals) {
+                if (test == null)
+                    return true;
+            }
+            return false;
+        }
+
+        for (Object test : inEquals) {
+            if (target.equals(test)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * targetが、続く値のグループに含まれている場合は true を返却する。
+     *
+     * @param target
+     * @param inEquals
+     * @return
+     */
+    public static boolean isNotIn(Object target, Object ... inEquals) {
+        return !isIn(target, inEquals);
     }
 }

@@ -42,7 +42,7 @@ public class ValidateEngine {
     private void validateRecurciveInner(ValueNode node, NodeDefine nodeDefine, ValueIOContext valueIOContext, ValidateContext validateContext, MessageStock errors) {
         validateContext.getValidateStack().push(nodeDefine);
 
-        for (Translate trans: nodeDefine.getTranslates()) {
+        for (Translate trans: nodeDefine.getTranslats()) {
             node = trans.translate(node, validateContext);
         }
 

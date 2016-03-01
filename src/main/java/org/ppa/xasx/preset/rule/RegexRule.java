@@ -2,19 +2,25 @@ package org.ppa.xasx.preset.rule;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
+import java.text.MessageFormat;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.XasXException;
 import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverHelper;
 import org.ppa.xasx.core.validate.ValidateContext;
 import org.ppa.xasx.types.Rule;
+import org.ppa.xasx.types.ParameterCheckable;
 import org.ppa.xasx.util.XasXUtil;
 
 /**
  * 正規表現ルール
  */
-public class RegexRule implements Rule {
+public class RegexRule implements Rule, ParameterCheckable {
     /**
      * 正規表現のパターンです。
      */
@@ -72,5 +78,21 @@ public class RegexRule implements Rule {
     @Override
     public ErrorMessage onLeaveScope(NodeDefine validNode, ValidateContext context) {
         return Rule.ok();
+    }
+    @Override
+    public void checkParameter(ValidateContext context) throws XasXException {
+        if (isEmpty(pattern)) {
+            final String msg = MessageFormat.format("required `{0}` attribute. at {1}",
+                    "pattern", context.getValidateStackText());
+            throw new XasXException(msg);
+        }
+
+        try {
+            Pattern.compile(pattern);
+        } catch (PatternSyntaxException ex){
+            final String msg = MessageFormat.format("`{0}` is invalid regex string for {1}. at {2}",
+                    pattern, "pattern", context.getValidateStackText());
+            throw new XasXException(msg);
+        }
     }
 }

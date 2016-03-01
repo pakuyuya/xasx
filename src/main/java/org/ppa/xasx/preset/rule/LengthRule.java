@@ -2,16 +2,20 @@ package org.ppa.xasx.preset.rule;
 
 import static org.ppa.xasx.util.XasXStringUtil.*;
 
+import java.text.MessageFormat;
+
 import org.ppa.xasx.core.ErrorMessage;
 import org.ppa.xasx.core.NodeDefine;
 import org.ppa.xasx.core.ValueNode;
+import org.ppa.xasx.core.XasXException;
 import org.ppa.xasx.core.message.MessageResolver;
 import org.ppa.xasx.core.message.MessageResolverHelper;
 import org.ppa.xasx.core.validate.ValidateContext;
+import org.ppa.xasx.types.ParameterCheckable;
 import org.ppa.xasx.types.Rule;
 import org.ppa.xasx.util.XasXUtil;
 
-public class LengthRule implements Rule {
+public class LengthRule implements Rule, ParameterCheckable {
     /**
      * 最小文字数です。指定無しの場合、下限値はありません。
      */
@@ -73,9 +77,9 @@ public class LengthRule implements Rule {
              || (isNumeric(max) && (len > Integer.valueOf(max)))) {
             String name = context.getNodeStringifyer().convert(context.getValidateStack(), context);
 
-            String mintxt = (isNumeric(min)) ? "" : min;
-            String maxtxt = (isNumeric(max)) ? "" : max;
-            String range = mintxt + "-" + maxtxt;
+            String mintxt = (isNumeric(min)) ? min : "";
+            String maxtxt = (isNumeric(max)) ? max : "";
+            String range = mintxt + " - " + maxtxt;
 
             MessageResolver resolver = context.getMessageResolver();
             String message = MessageResolverHelper.resolveMessage(resolver, msgTemplate, name, range, len);
@@ -89,5 +93,29 @@ public class LengthRule implements Rule {
     @Override
     public ErrorMessage onLeaveScope(NodeDefine validNode, ValidateContext context) {
         return Rule.ok();
+    }
+    @Override
+    public void checkParameter(ValidateContext context) throws XasXException {
+        if (isEmpty(min) && isEmpty(max)) {
+            throw new XasXException("require either min or max. at" + context.getValidateStackText());
+        }
+
+        if (isNotEmpty(min) && (!isNumeric(min) || Integer.valueOf(min) < 0)) {
+            final String msg = MessageFormat.format("`{0}` is invalid value for {1}. at `{2}`",
+                    min, "min", context.getValidateStackText());
+            throw new XasXException(msg);
+        }
+
+        if (isNotEmpty(max) && (!isNumeric(max) || Integer.valueOf(max) < 0)) {
+            final String msg = MessageFormat.format("`{0}` is invalid value for {1}. at `{2}`",
+                    max, "max", context.getValidateStackText());
+            throw new XasXException(msg);
+        }
+
+        if (isNumeric(min) && isNumeric(max) && Integer.valueOf(min) > Integer.valueOf(max)) {
+            final String msg = MessageFormat.format("`{0}`(min) is larger than `{1}`(max). at `{2}`",
+                    min, max, context.getValidateStackText());
+            throw new XasXException(msg);
+        }
     }
 }

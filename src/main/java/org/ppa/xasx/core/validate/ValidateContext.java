@@ -18,6 +18,10 @@ public class ValidateContext {
     private String wildcardDisplay;
     private NodeStringifyer nodeStringifyer;
 
+    public String getValidateStackText() {
+        return nodeStringifyer.convert(validateStack, this);
+    }
+
     public Stack<NodeDefine> getValidateStack() {
         return validateStack;
     }

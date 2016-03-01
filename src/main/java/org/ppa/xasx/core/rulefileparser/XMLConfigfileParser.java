@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,10 @@ import java.util.Map.Entry;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.ppa.xasx.core.NodeDefine;
+import org.ppa.xasx.core.XasXException;
 import org.ppa.xasx.core.matcher.MatcherHelper;
+import org.ppa.xasx.core.validate.ValidateContext;
+import org.ppa.xasx.types.ParameterCheckable;
 import org.ppa.xasx.types.Rule;
 import org.ppa.xasx.types.Translate;
 import org.ppa.xasx.util.XasXXmlUtil;
@@ -69,6 +73,8 @@ public class XMLConfigfileParser implements ConfigfileParser {
                     }
                 }
             }
+
+            validateConfig(ret);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -223,7 +229,6 @@ public class XMLConfigfileParser implements ConfigfileParser {
         }
     }
 
-
     private void loadSettingProp(XmlElementData prop, Map<String, String> properties) {
         if (!prop.getAttributes().containsKey("name")) {
             return;
@@ -241,5 +246,33 @@ public class XMLConfigfileParser implements ConfigfileParser {
         }
 
         properties.put(name, value);
+    }
+
+    private void validateConfig(Configs config) {
+        ValidateContext context = new ValidateContext();
+        List<Exception> errors = new ArrayList<Exception>();
+        validateDefine(config.getValidRoot(), context, errors);
+    }
+
+    private void validateDefine(NodeDefine node, ValidateContext context, List<Exception> errors) {
+        context.getValidateStack().push(node);
+        checkParameters(node.getRules(), context, errors);
+        checkParameters(node.getTranslats(), context, errors);
+        for (NodeDefine child : node.getChildren()) {
+            validateDefine(child, context, errors);
+        }
+        context.getValidateStack().pop();
+    }
+
+    private <T> void checkParameters(Collection<T> targets, ValidateContext context, List<Exception> errors) {
+        for (T target : targets) {
+            if (target instanceof ParameterCheckable) {
+                try {
+                    ((ParameterCheckable)target).checkParameter(context);
+                } catch (XasXException ex) {
+                    errors.add(ex);
+                }
+            }
+        }
     }
 }
